@@ -1,6 +1,5 @@
 package com.kh.countingBell.service;
 
-import com.kh.countingBell.domain.Reservation;
 import com.kh.countingBell.domain.Review;
 import com.kh.countingBell.repo.ReviewDAO;
 import lombok.extern.slf4j.Slf4j;

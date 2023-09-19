@@ -43,7 +43,7 @@ public class ReviewController {
     }
 
     //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
-    @GetMapping("/member/{id}/review")
+    @GetMapping("/member/{user}/review")
     public ResponseEntity<List<Review>> memberReviewList(@PathVariable String user) {
         return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
     }
