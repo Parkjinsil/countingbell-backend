@@ -69,14 +69,12 @@ public class RestaurantService {
         return restaurantDAO.findByLocalCode(id);
     }
 
-    // 식당 1개에 따른 메뉴 조회
-    public List<Menu> findByResCode(int id) {
-        return restaurantDAO.findByResCode(id);
-    }
 
-    // 식당 1개에 따른 음식 종류 조회
+
+    // 식당별 음식종류 조회
     public List<Food> findFoodByResCode(int id) {
         return restaurantDAO.findFoodByResCode(id);
     }
+
 
 }
