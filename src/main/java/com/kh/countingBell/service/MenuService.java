@@ -44,10 +44,7 @@ public class MenuService {
     }
 
 
-    // 식당 1개에 따른 메뉴 조회
-    public List<Menu> findByResCode(int id) {
-        return menuDAO.findByResCode(id);
-    }
+
 
 
 }

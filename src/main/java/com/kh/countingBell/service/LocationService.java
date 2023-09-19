@@ -2,7 +2,9 @@ package com.kh.countingBell.service;
 
 
 import com.kh.countingBell.domain.Location;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.LocationDAO;
+import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class LocationService {
 
     @Autowired
     private LocationDAO locationDAO;
+
+    private RestaurantDAO restaurantDAO;
 
     public List<Location> showAll() {
         return locationDAO.findAll();
@@ -31,7 +35,7 @@ public class LocationService {
 
     public Location update(Location location) {
         Location local = locationDAO.findById(location.getLocalCode()).orElse(null);
-        if(local != null) {
+        if (local != null) {
             return locationDAO.save(location);
         }
         return null;
@@ -42,5 +46,4 @@ public class LocationService {
         locationDAO.delete(target);
         return target;
     }
-
 }

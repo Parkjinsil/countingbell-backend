@@ -3,6 +3,7 @@ package com.kh.countingBell.controller;
 import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.service.MenuService;
+import com.kh.countingBell.service.RestaurantService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ public class MenuController {
 
     @Autowired
     private MenuService menu;
+
+    @Autowired
+    private RestaurantService restaurant;
 
     @GetMapping("/menu")
     public ResponseEntity<List<Menu>> showAllMenu() {
@@ -63,9 +67,10 @@ public class MenuController {
         }
     }
 
-    // 식당 별 메뉴 조회
-    @GetMapping("/menu/{code}/restaurant")
-    public ResponseEntity<List<Menu>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(menu.findByResCode(id));
+
+    @GetMapping("/menu/{id}/restaurant")
+    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByResCode(id));
     }
+
 }
