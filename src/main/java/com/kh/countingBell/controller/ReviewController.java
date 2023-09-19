@@ -1,5 +1,7 @@
 package com.kh.countingBell.controller;
 
+import com.kh.countingBell.service.MemberService;
+import com.kh.countingBell.service.RestaurantService;
 import com.kh.countingBell.service.ReviewService;
 import com.kh.countingBell.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class ReviewController {
 
     //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
     @GetMapping("/member/{id}/review")
-    public ResponseEntity<List<Review>> memberReviewList(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findById(id));
+    public ResponseEntity<List<Review>> memberReviewList(@PathVariable String user) {
+        return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
     }
 
     //리뷰 추가 : POST - http://localhost:8080/api/review

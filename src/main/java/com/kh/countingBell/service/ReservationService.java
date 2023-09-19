@@ -43,5 +43,5 @@ public class ReservationService {
 
     public List<Reservation> findByResCode(int code){ return dao.findByResCode(code); }
 
-    public List<Reservation> findById(String id){ return dao.findById(id); }
+    public List<Reservation> findById(String user){ return dao.findById(user); }
 }

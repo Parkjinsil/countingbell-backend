@@ -45,5 +45,5 @@ public class ReviewService {
 
     public List<Review> findByResCode(int code) { return dao.findByResCode(code); }
 
-    public List<Review> findById(String id){ return dao.findById(id); }
+    public List<Review> findById(String user){ return dao.findById(user); }
 }

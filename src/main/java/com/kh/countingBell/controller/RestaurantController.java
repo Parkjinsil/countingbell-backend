@@ -29,9 +29,9 @@ public class RestaurantController {
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
     @GetMapping("/restaurant/{id}/discount")
-    public ResponseEntity<List<Discount>> resDiscountList(@PathVariable int id){
+    public ResponseEntity<List<Discount>> resDiscountList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(discount.findByResCode(id));
-
+    }
 
     // 식당 1개에 따른 식당사진 조회
     // http://localhost:8080/restaurant/1/photo

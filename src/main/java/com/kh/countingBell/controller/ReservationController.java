@@ -1,7 +1,9 @@
 package com.kh.countingBell.controller;
 
+import com.kh.countingBell.service.MemberService;
 import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.domain.Reservation;
+import com.kh.countingBell.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +45,8 @@ public class ReservationController {
 
     //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
     @GetMapping("/member/{id}/reservation")
-    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.findById(id));
+    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String user) {
+        return ResponseEntity.status(HttpStatus.OK).body(reservation.findById(user));
     }
 
     //예약 추가 : POST - http://localhost:8080/api/reservation
