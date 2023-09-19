@@ -1,7 +1,9 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Location;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.LocationService;
+import com.kh.countingBell.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ public class LocationConroller {
 
     @Autowired
     private LocationService location;
+
+    @Autowired
+    private RestaurantService restaurant;
 
     @GetMapping("/location")
     public ResponseEntity<List<Location>> showAllLocation() {
@@ -62,4 +67,8 @@ public class LocationConroller {
     }
 
 
+    @GetMapping("/location/{id}/restaurant")
+    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
+    }
 }
