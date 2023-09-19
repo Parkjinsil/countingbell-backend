@@ -31,6 +31,6 @@ public class Pick {
 
     @ManyToOne
     @JoinColumn(name="id")
-    private Member member;
+    private Member  member;
 
 }
