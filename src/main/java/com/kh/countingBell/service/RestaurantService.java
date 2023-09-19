@@ -71,10 +71,4 @@ public class RestaurantService {
 
 
 
-    // 식당별 음식종류 조회
-    public List<Food> findFoodByResCode(int id) {
-        return restaurantDAO.findFoodByResCode(id);
-    }
-
-
 }

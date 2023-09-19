@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -51,6 +53,15 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name="id")
     private Member member;
+
+    @ManyToMany
+    @JoinTable(
+            name = "res_menu", // 중간 테이블명
+            joinColumns = @JoinColumn(name = "res_code"), // Restaurant 엔터티의 외래 키
+            inverseJoinColumns = @JoinColumn(name = "menu_code") // Menu 엔터티의 외래 키
+    )
+    private List<Menu> menus;
+
 
 
 }

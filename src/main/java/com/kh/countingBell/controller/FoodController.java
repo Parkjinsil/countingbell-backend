@@ -65,7 +65,11 @@ public class FoodController {
         }
     }
 
-
+    // 식당별 음식종류 조회
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Food>> resFoodList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(food.findFoodByResCode(id));
+    }
 
 
 

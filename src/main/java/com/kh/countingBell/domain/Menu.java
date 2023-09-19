@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -25,5 +27,8 @@ public class Menu {
 
     @Column(name="menu_picture")
     private String menuPicture;
+
+    @ManyToMany(mappedBy = "menus")
+    private List<Restaurant> restaurants;
 
 }

@@ -89,14 +89,10 @@ public class RestaurantController {
     }
 
 
-    // 식당별 음식종류 조회
-    @GetMapping("/restaurant/{id}/food")
-    public ResponseEntity<List<Food>> resFoodList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findFoodByResCode(id));
-    }
+
 
     // 식당별 메뉴 조회
-    @GetMapping("/restaurant/{id}/menu")
+    @GetMapping("/restaurant/{id}/resMenu")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(resMenu.findByResCode(id));
     }

@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "res_menu")
 public class ResMenu {
 
     @Id

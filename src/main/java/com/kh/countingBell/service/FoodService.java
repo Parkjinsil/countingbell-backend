@@ -44,6 +44,9 @@ public class FoodService {
     }
 
 
-
+    // 식당별 음식종류 조회
+    public List<Food> findFoodByResCode(int id) {
+        return foodDAO.findFoodByResCode(id);
+    }
 
 }

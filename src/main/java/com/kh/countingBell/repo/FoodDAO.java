@@ -13,7 +13,9 @@ import java.util.List;
 
 public interface FoodDAO extends JpaRepository<Food, Integer> {
 
-
+    // 식당 1개에 따른 음식 종류 조회
+    @Query(value = "SELECT * FROM food WHERE res_code = :code", nativeQuery = true)
+    List<Food> findFoodByResCode(int code);
 
 
 }
