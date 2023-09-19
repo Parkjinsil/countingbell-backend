@@ -35,6 +35,7 @@ public class RestaurantController {
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
     }
+
     // 식당 1개에 따른 댓글 조회
     // http://localhost:8080/api/restaurant/1/resComment
     @GetMapping("/restaurant/{id}/resComment")
