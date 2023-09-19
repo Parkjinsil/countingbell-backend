@@ -69,6 +69,10 @@ public class RestaurantService {
         return restaurantDAO.findByLocalCode(id);
     }
 
+    // 음식종류에 따른 식당 조회
+    public List<Restaurant> findResByFood(int id) {
+        return restaurantDAO.findResByFood(id);
+    }
 
 
 }

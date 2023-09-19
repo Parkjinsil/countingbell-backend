@@ -15,7 +15,9 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer> {
     List<Restaurant> findByLocalCode(int code); // 이곳의 code가 쿼리문 안의 '?' 자리로 들어간다  ==> service로 메서드 추가하러 가기
 
 
-
+    // 음식종류에 따른 식당 조회
+    @Query(value = "SELECT * FROM restaurant WHERE food_code = :code", nativeQuery = true)
+    List<Restaurant> findResByFood(int code);
 
 
 }
