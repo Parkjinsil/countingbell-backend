@@ -65,9 +65,10 @@ public class FoodController {
         }
     }
 
-    @GetMapping("/food/{id}/restaurant")
-    public ResponseEntity<List<Food>> resFoodList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findFoodByResCode(id));
-    }
+
+
+
+
+
 
 }

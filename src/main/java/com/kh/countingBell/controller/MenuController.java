@@ -68,9 +68,6 @@ public class MenuController {
     }
 
 
-    @GetMapping("/menu/{id}/restaurant")
-    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByResCode(id));
-    }
+
 
 }

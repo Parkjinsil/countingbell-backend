@@ -47,9 +47,6 @@ public class Restaurant {
     @JoinColumn(name="food_code")
     private Food food;
 
-    @ManyToOne
-    @JoinColumn(name="menu_code")
-    private Menu menu;
 
     @ManyToOne
     @JoinColumn(name="id")

@@ -26,7 +26,7 @@ public class RestaurantController {
     private FoodService food;
 
     @Autowired
-    private MenuService menu;
+    private ResMenuService resMenu;
 
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
@@ -89,9 +89,17 @@ public class RestaurantController {
     }
 
 
+    // 식당별 음식종류 조회
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Food>> resFoodList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findFoodByResCode(id));
+    }
 
-
-
+    // 식당별 메뉴 조회
+    @GetMapping("/restaurant/{id}/menu")
+    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(resMenu.findByResCode(id));
+    }
 
 
 }

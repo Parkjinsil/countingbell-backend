@@ -3,6 +3,7 @@ package com.kh.countingBell.service;
 import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.repo.MenuDAO;
+import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class MenuService {
 
     @Autowired
     private MenuDAO menuDAO;
+
+    @Autowired
+    private RestaurantDAO restaurantDAO;
 
     public List<Menu> showAll() {
         return menuDAO.findAll();
@@ -42,6 +46,7 @@ public class MenuService {
         menuDAO.delete(target);
         return target;
     }
+
 
 
 
