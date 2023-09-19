@@ -44,7 +44,7 @@ public class ResCommentService {
         return target;
     }
 
-    public List<ResComment> findByResCode(int code) {
-        return resCommentDAO.findByResCode(code);
+    public List<ResComment> findByReviewCode(int code) {
+        return resCommentDAO.findByReviewCode(code);
     }
 }

@@ -25,22 +25,12 @@ public class RestaurantController {
     @Autowired
     private PickService pick;
 
-    @Autowired
-    private ResCommentService resComment;
-
 
     // 식당 1개에 따른 찜 조회
     // http://localhost:8080/api/restaurant/1/pick
     @GetMapping("/restaurant/{id}/pick")
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
-    }
-
-    // 식당 1개에 따른 댓글 조회
-    // http://localhost:8080/api/restaurant/1/resComment
-    @GetMapping("/restaurant/{id}/resComment")
-    public ResponseEntity<List<ResComment>> resCommentList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(resComment.findByResCode(id));
     }
 
 
@@ -102,8 +92,4 @@ public class RestaurantController {
         }
     }
 
-    @GetMapping("/restaurant/{id}/location")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
-    }
 }

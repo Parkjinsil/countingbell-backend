@@ -30,7 +30,7 @@ public class Review {
     @Column(name = "review_date")
     private Date reviewDate;
 
-    @Column(name = "parents_comment_seq")
+    @Column(name = "PARANTS_RES_COMMENT_SEQ ")
     private String parentsCommentSeq;
 
     @ManyToOne
