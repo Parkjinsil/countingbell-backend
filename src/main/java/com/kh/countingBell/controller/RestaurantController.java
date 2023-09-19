@@ -25,15 +25,15 @@ public class RestaurantController {
     @Autowired
     private PickService pick;
 
+    @Autowired
+    private ResMenuService resMenu;
+
     // 식당 1개에 따른 찜 조회
     // http://localhost:8080/api/restaurant/1/pick
     @GetMapping("/restaurant/{id}/pick")
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
     }
-
-    @Autowired
-    private ResMenuService resMenu;
 
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
@@ -93,12 +93,6 @@ public class RestaurantController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-    }
-
-    // 식당별 음식종류 조회
-    @GetMapping("/restaurant/{id}/food")
-    public ResponseEntity<List<Food>> resFoodList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findFoodByResCode(id));
     }
 
     // 식당별 메뉴 조회

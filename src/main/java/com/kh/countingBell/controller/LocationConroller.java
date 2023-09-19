@@ -21,11 +21,6 @@ public class LocationConroller {
     @Autowired
     private RestaurantService restaurant;
 
-    @GetMapping("/restaurant/{id}/location")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
-    }
-
     @GetMapping("/location")
     public ResponseEntity<List<Location>> showAllLocation() {
         try {
@@ -71,9 +66,9 @@ public class LocationConroller {
         }
     }
 
-
+    // 위치별 식당 조회
     @GetMapping("/location/{id}/restaurant")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
+    public ResponseEntity<List<Restaurant>> findLocalByResCode(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findLocalByResCode(id));
     }
 }
