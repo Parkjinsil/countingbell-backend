@@ -2,9 +2,8 @@ package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Discount;
 import com.kh.countingBell.domain.Member;
-import com.kh.countingBell.service.DiscountService;
-import com.kh.countingBell.service.MemberService;
-import com.kh.countingBell.service.PhotoService;
+import com.kh.countingBell.domain.Reservation;
+import com.kh.countingBell.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/*")
 public class MemberController {
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private MemberService memberService;
@@ -48,6 +50,13 @@ public class MemberController {
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Member> delete(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
+    }
+
+    //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
+    @GetMapping("/member/{user}/reservation")
+    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String user) {
+        log.info("user : " + user);
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.findById(user));
     }
 
 

@@ -2,10 +2,13 @@ package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Discount;
 import com.kh.countingBell.domain.Photo;
+import com.kh.countingBell.domain.Reservation;
 import com.kh.countingBell.service.DiscountService;
 import com.kh.countingBell.service.PhotoService;
 import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/*")
+@Log4j2
 public class RestaurantController {
+
+    @Autowired
+    private ReservationService reservationService;
 
     @Autowired
     private RestaurantService restaurant;
@@ -87,5 +94,12 @@ public class RestaurantController {
     @GetMapping("/restaurant/{id}/location")
     public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
+    }
+
+    //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation
+    @GetMapping("/restaurant/{id}/reservation")
+    public ResponseEntity<List<Reservation>> ReservationList(@PathVariable int id) {
+        log.info("id : " + id);
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.findByResCode(id));
     }
 }
