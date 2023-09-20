@@ -20,9 +20,9 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer> {
     @Query(value = "SELECT * FROM restaurant WHERE food_code = :code", nativeQuery = true)
     List<Restaurant> findResByFood(int code);
 
-    // 메뉴별 식당 조회
-    @Query(value = "SELECT * FROM restaurant WHERE menu_code = :code", nativeQuery = true)
-    List<Restaurant> findByMenuCode(int code);
+
+
+
 
 
 }

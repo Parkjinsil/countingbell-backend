@@ -2,6 +2,7 @@ package com.kh.countingBell.service;
 
 import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.MenuDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,10 @@ public class MenuService {
     }
 
 
+    // 식당 1개의 메뉴 조회
+    public List<Menu>  findByResCode(int id) {
+        return menuDAO.findByResCode(id);
+    }
 
 
 

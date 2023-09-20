@@ -76,9 +76,6 @@ public class RestaurantService {
     }
 
 
-    // 메뉴에 따른 식당 조회
-    public List<Restaurant>  findByMenuCode(int id) {
-        return restaurantDAO.findByMenuCode(id);
-    }
+
 
 }

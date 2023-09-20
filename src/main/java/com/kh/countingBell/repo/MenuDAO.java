@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface MenuDAO extends JpaRepository<Menu, Integer> {
 
-
+    // 식당별 메뉴 조회
+    @Query(value = "SELECT * FROM menu WHERE res_code = :code", nativeQuery = true)
+    List<Menu> findByResCode(int code);
 }

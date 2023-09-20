@@ -2,6 +2,7 @@ package com.kh.countingBell.service;
 
 import com.kh.countingBell.domain.Photo;
 import com.kh.countingBell.repo.PhotoDAO;
+import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ public class PhotoService {
     @Autowired
     private PhotoDAO photoDAO;
 
-//    @Autowired
-//    private RestaurantDAO restaurantDAO;
+    @Autowired
+    private RestaurantDAO restaurantDAO;
 
     public List<Photo> showAll() {
         return photoDAO.findAll();
