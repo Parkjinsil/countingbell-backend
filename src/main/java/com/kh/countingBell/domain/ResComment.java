@@ -29,15 +29,12 @@ public class ResComment {
     @Column(name="res_comment_date")
     private Date resCommentDate;
 
-    @Column(name="res_parent_comment")
-    private String resParentComment;
+    @ManyToOne
+    @JoinColumn(name="id")
+    private Member member;
 
-//    @ManyToOne
-//    @JoinColumn(name="id")
-//    private Member member;
-//
-//    @ManyToOne
-//    @JoinColumn(name="review_code")
-//    private Review review;
+    @ManyToOne
+    @JoinColumn(name="review_code")
+    private Review review;
 
 }

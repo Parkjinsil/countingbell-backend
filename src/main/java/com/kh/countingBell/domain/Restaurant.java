@@ -58,10 +58,6 @@ public class Restaurant {
     @JoinColumn(name="menu_code")
     private Menu menu;
 
-//    @ManyToOne
-//    @JoinColumn(name="resMenuCode")
-//    private ResMenu resMenu;
-
 
 
 }
