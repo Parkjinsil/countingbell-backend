@@ -44,6 +44,7 @@ public class PickService {
     }
 
     public List<Pick> findByResCode(int code) {
+
         return pickDAO.findByResCode(code);
     }
 

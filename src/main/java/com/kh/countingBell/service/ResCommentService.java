@@ -45,6 +45,7 @@ public class ResCommentService {
     }
 
     public List<ResComment> findByResCode(int code) {
+
         return resCommentDAO.findByResCode(code);
     }
 }
