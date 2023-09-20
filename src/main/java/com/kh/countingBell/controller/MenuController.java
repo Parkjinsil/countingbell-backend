@@ -2,6 +2,7 @@ package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.Menu;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
 import org.apache.coyote.Response;
@@ -65,6 +66,12 @@ public class MenuController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    // 메뉴별 식당 조회
+    @GetMapping("/menu/{id}/restaurant")
+    public ResponseEntity<List<Restaurant>> resMenuList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByMenuCode(id));
     }
 
 

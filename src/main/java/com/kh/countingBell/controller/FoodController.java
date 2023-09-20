@@ -21,12 +21,6 @@ public class FoodController {
     @Autowired
     private RestaurantService restaurant;
 
-    // 음식종류에 따른 식당 조회
-    @GetMapping("/restaurant/{id}/food")
-    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findResByFood(id));
-    }
-
     @GetMapping("/food")
     public ResponseEntity<List<Food>> showAllFood() {
         try {
@@ -72,7 +66,11 @@ public class FoodController {
         }
     }
 
-
+    // 음식종류에 따른 식당 조회
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findResByFood(id));
+    }
 
 
 

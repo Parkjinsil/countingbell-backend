@@ -22,15 +22,15 @@ public class Pick {
     @SequenceGenerator(name="pickSequence", sequenceName="SEQ_PICK", allocationSize=1)
     private int pickCode;
 
-    @ManyToOne
-    @JoinColumn(name="res_code")
-    private Restaurant restaurant;
-
-    @Column(name="pick_time")
-    private Date pickTime;
-
-    @ManyToOne
-    @JoinColumn(name="id")
-    private Member  member;
+//    @ManyToOne
+//    @JoinColumn(name="res_code")
+//    private Restaurant restaurant;
+//
+//    @Column(name="pick_time")
+//    private Date pickTime;
+//
+//    @ManyToOne
+//    @JoinColumn(name="id")
+//    private Member member;
 
 }

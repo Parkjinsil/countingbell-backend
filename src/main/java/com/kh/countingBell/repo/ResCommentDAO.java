@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ResCommentDAO extends JpaRepository<ResComment, Integer> {
 
-    // 리뷰 1개에 따른 댓글 조회
-    @Query(value="SELECT * FROM res_comment WHERE review_code = :code", nativeQuery = true)
-    List<ResComment> findByReviewCode(int code);
+    // 식당 1개에 따른 댓글 조회
+    @Query(value="SELECT * FROM resComment WHERE res_code= :id", nativeQuery = true)
+    List<ResComment> findByResCode(int id);
 
 }
