@@ -26,7 +26,13 @@ public class RestaurantController {
     private PickService pick;
 
     @Autowired
-    private ResMenuService resMenu;
+    private ReviewService review;
+
+    //식당 1개에 따른 리뷰 : GET - http://localhost:8080/api/review/1/restaurant
+    @GetMapping("/restaurant/{id}/review")
+    public ResponseEntity<List<Review>> reviewByRes(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(review.findByResCode(id));
+    }
 
     // 식당 1개에 따른 찜 조회
     // http://localhost:8080/api/restaurant/1/pick
@@ -95,10 +101,5 @@ public class RestaurantController {
         }
     }
 
-    // 식당별 메뉴 조회
-    @GetMapping("/restaurant/{id}/menu")
-    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(resMenu.findByResCode(id));
-    }
 
 }

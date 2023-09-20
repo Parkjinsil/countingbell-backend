@@ -43,18 +43,6 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(review.show(id));
     }
 
-    //식당 1개에 따른 리뷰 : GET - http://localhost:8080/api/review/1/restaurant
-    @GetMapping("/restaurant/{id}/review")
-    public ResponseEntity<List<Review>> ReviewList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findByResCode(id));
-    }
-
-    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
-    @GetMapping("/member/{id}/review")
-    public ResponseEntity<List<Review>> memberReviewList(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findById(id));
-    }
-
     //리뷰 추가 : POST - http://localhost:8080/api/review
     @PostMapping("/review")
     public ResponseEntity<Review> createReview(@RequestBody Review vo) {
