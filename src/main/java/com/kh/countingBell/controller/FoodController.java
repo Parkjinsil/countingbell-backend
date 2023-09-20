@@ -1,7 +1,9 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Food;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.FoodService;
+import com.kh.countingBell.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ public class FoodController {
 
     @Autowired
     private FoodService food;
+
+    @Autowired
+    private RestaurantService restaurant;
 
     @GetMapping("/food")
     public ResponseEntity<List<Food>> showAllFood() {
@@ -61,8 +66,14 @@ public class FoodController {
         }
     }
 
-    @GetMapping("/food/{id}/restaurant")
-    public ResponseEntity<List<Food>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(food.findByResCode(id));
+    // 음식종류에 따른 식당 조회
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findResByFood(id));
     }
+
+
+
+
+
 }

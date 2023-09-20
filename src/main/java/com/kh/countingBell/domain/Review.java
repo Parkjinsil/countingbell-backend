@@ -30,9 +30,6 @@ public class Review {
     @Column(name = "review_date")
     private Date reviewDate;
 
-    @Column(name = "parents_comment_seq")
-    private String parentsCommentSeq;
-
     @ManyToOne
     @JoinColumn(name = "id")
     private Member member;

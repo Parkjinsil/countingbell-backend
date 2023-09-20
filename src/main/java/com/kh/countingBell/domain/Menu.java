@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.Join;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -25,5 +28,10 @@ public class Menu {
 
     @Column(name="menu_picture")
     private String menuPicture;
+
+
+//    @ManyToOne
+//    @JoinColumn(name="res_code")
+//    private Restaurant restaurant;
 
 }

@@ -11,6 +11,7 @@ import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -67,6 +68,17 @@ public class RestaurantService {
     // 지역에 따른 식당 조회
     public List<Restaurant> findByLocalCode(int id) {
         return restaurantDAO.findByLocalCode(id);
+    }
+
+    // 음식종류에 따른 식당 조회
+    public List<Restaurant> findResByFood(int id) {
+        return restaurantDAO.findResByFood(id);
+    }
+
+
+    // 메뉴에 따른 식당 조회
+    public List<Restaurant>  findByMenuCode(int id) {
+        return restaurantDAO.findByMenuCode(id);
     }
 
 }
