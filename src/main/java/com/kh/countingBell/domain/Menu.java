@@ -29,9 +29,8 @@ public class Menu {
     @Column(name="menu_picture")
     private String menuPicture;
 
-
-//    @ManyToOne
-//    @JoinColumn(name="res_code")
-//    private Restaurant restaurant;
+    @ManyToOne
+    @JoinColumn(name="res_code")
+    private Restaurant restaurant;
 
 }

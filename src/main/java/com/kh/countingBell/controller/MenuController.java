@@ -7,6 +7,7 @@ import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,11 +69,8 @@ public class MenuController {
         }
     }
 
-    // 메뉴별 식당 조회
-    @GetMapping("/menu/{id}/restaurant")
-    public ResponseEntity<List<Restaurant>> resMenuList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByMenuCode(id));
-    }
+
+
 
 
 
