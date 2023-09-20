@@ -1,6 +1,5 @@
 package com.kh.countingBell.service;
 
-import com.kh.countingBell.domain.Reservation;
 import com.kh.countingBell.domain.Review;
 import com.kh.countingBell.repo.ReviewDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +44,5 @@ public class ReviewService {
 
     public List<Review> findByResCode(int code) { return dao.findByResCode(code); }
 
-    public List<Review> findById(String id){ return dao.findById(id); }
+    public List<Review> findById(String user){ return dao.findById(user); }
 }

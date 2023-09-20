@@ -41,7 +41,12 @@ public class ReservationService {
         return target;
     }
 
-    public List<Reservation> findByResCode(int code){ return dao.findByResCode(code); }
+    public List<Reservation> findByResCode(int code){
+        log.info("code : " + code);
+        return dao.findByResCode(code);
+    }
 
-    public List<Reservation> findById(String id){ return dao.findById(id); }
+    public List<Reservation> findById(String user){
+        log.info("user : " + user);
+        return dao.findById(user); }
 }
