@@ -3,6 +3,7 @@ package com.kh.countingBell.repo;
 import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Restaurant;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,6 +19,10 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer> {
     // 음식종류에 따른 식당 조회
     @Query(value = "SELECT * FROM restaurant WHERE food_code = :code", nativeQuery = true)
     List<Restaurant> findResByFood(int code);
+
+    // 메뉴별 식당 조회
+    @Query(value = "SELECT * FROM restaurant WHERE menu_code = :code", nativeQuery = true)
+    List<Restaurant> findByMenuCode(int code);
 
 
 }

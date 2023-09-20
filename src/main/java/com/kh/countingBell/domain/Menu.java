@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.Join;
 
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class Menu {
     @Column(name="menu_picture")
     private String menuPicture;
 
-    @ManyToMany(mappedBy = "menus")
-    private List<Restaurant> restaurants;
+
+//    @ManyToOne
+//    @JoinColumn(name="res_code")
+//    private Restaurant restaurant;
 
 }

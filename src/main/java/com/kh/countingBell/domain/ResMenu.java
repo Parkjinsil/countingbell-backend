@@ -14,6 +14,7 @@ public class ResMenu {
     @SequenceGenerator(name = "resMenuSequence", sequenceName = "SEQ_RES_MENU", allocationSize = 1)
     private int resMenuCode;
 
+
     @ManyToOne
     @JoinColumn(name = "res_code")
     private Restaurant restaurant;

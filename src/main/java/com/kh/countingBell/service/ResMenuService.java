@@ -16,8 +16,6 @@ public class ResMenuService {
     @Autowired
     private ResMenuDAO resMenuDAO;
 
-    // 식당 1개에 따른 메뉴 조회
-    public List<Menu> findByResCode(int id) {
-        return resMenuDAO.findByResCode(id);
-    }
+
+
 }

@@ -54,13 +54,13 @@ public class Restaurant {
     @JoinColumn(name="id")
     private Member member;
 
-    @ManyToMany
-    @JoinTable(
-            name = "res_menu", // 중간 테이블명
-            joinColumns = @JoinColumn(name = "res_code"), // Restaurant 엔터티의 외래 키
-            inverseJoinColumns = @JoinColumn(name = "menu_code") // Menu 엔터티의 외래 키
-    )
-    private List<Menu> menus;
+    @ManyToOne
+    @JoinColumn(name="menu_code")
+    private Menu menu;
+
+//    @ManyToOne
+//    @JoinColumn(name="resMenuCode")
+//    private ResMenu resMenu;
 
 
 

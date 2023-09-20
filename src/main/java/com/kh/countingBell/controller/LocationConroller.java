@@ -67,6 +67,7 @@ public class LocationConroller {
     }
 
 
+    // 위치별 식당조회
     @GetMapping("/location/{id}/restaurant")
     public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
