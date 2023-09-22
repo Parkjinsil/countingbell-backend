@@ -36,6 +36,17 @@ public class RestaurantController {
     private PhotoService photo;
 
     @Autowired
+    private ResCommentService comment;
+
+    @Autowired
+    private PickService pick;
+
+    // 식당 1개에 따른 찜 조회
+    @GetMapping("/restaurant/{id}/pick")
+    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
+    }
+
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
     @GetMapping("/restaurant/{id}/discount")

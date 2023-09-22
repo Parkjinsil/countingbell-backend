@@ -1,6 +1,8 @@
 package com.kh.countingBell.controller;
 
+import com.kh.countingBell.domain.ResComment;
 import com.kh.countingBell.service.MemberService;
+import com.kh.countingBell.service.ResCommentService;
 import com.kh.countingBell.service.RestaurantService;
 import com.kh.countingBell.service.ReviewService;
 import com.kh.countingBell.domain.Review;
@@ -23,6 +25,15 @@ public class ReviewController {
 
     @Autowired
     private MemberService member;
+
+    @Autowired
+    private ResCommentService resComment;
+
+    // 리뷰 1개에 따른 댓글 조회
+    @GetMapping("/review/{id}/comment")
+    public ResponseEntity<List<ResComment>> resCommentList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(resComment.findByReviewCode(id));
+    }
 
     //리뷰 전체 조회 : GET - http://localhost:8080/api/review
     @GetMapping("/review")

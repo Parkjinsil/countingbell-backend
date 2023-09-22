@@ -37,15 +37,15 @@ public class ResCommentService {
         return null;
     }
 
-    // DELETE FROM COMMENT WHERE CODE=?
     public ResComment deleteResComment(int code){
         ResComment target = resCommentDAO.findById(code).orElse(null);
         resCommentDAO.delete(target);
         return target;
     }
 
-    public List<ResComment> findByResCode(int code) {
+    //
+    public List<ResComment> findByReviewCode(int code) {
 
-        return resCommentDAO.findByResCode(code);
+        return resCommentDAO.findByReviewCode(code);
     }
 }

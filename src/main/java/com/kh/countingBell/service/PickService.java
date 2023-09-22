@@ -43,6 +43,7 @@ public class PickService {
         return target;
     }
 
+    // 식당 1개에 따른 찜 조회
     public List<Pick> findByResCode(int code) {
 
         return pickDAO.findByResCode(code);
