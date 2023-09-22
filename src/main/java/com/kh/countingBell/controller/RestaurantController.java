@@ -41,6 +41,9 @@ public class RestaurantController {
     @Autowired
     private PickService pick;
 
+    @Autowired
+    private MenuService menu;
+
     // 식당 1개에 따른 찜 조회
     @GetMapping("/restaurant/{id}/pick")
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
