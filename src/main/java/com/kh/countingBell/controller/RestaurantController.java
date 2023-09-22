@@ -62,6 +62,12 @@ public class RestaurantController {
     }
 
 
+    // 식당 1개의 메뉴 조회
+    @GetMapping("/restaurant/{id}/menu")
+    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(menu.findByResCode(id));
+    }
+
 
     @GetMapping("/restaurant")
     public ResponseEntity<List<Restaurant>> showAllRestaurant() {
