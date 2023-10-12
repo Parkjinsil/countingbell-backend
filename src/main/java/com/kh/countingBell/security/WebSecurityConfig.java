@@ -34,6 +34,10 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/public/**")).permitAll()
                 .anyRequest().authenticated();
+//                .anyRequest().permitAll();
+
+        // anyRequest.permitAll()
+        // authenticated...
 
         // JWT 토큰 생성부터 필터처리까지 전부 세팅
         // JWT 필터 등록
