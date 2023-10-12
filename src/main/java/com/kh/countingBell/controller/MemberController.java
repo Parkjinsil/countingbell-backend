@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/*")
+@RequestMapping("/auth")
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class MemberController {
 
@@ -39,14 +39,15 @@ public class MemberController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    // 회원가입
-    @PostMapping("/user/signup")
+//    // 회원가입
+    @PostMapping("/signup")
     public ResponseEntity register(@RequestBody MemberDTO dto) {
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
                 .id(dto.getId())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
+
                 .build();
 
         // 서비스를 이용해 리포지터리에 유저 저장
@@ -54,12 +55,13 @@ public class MemberController {
         MemberDTO responseDTO = dto.builder()
                 .id(registerMember.getId())
                 .name(registerMember.getName())
+
                 .build();
         return ResponseEntity.ok().body(responseDTO);
     }
 
     // 로그인 -> token
-    @PostMapping("/user/signin")
+    @PostMapping("/signin")
     public ResponseEntity authenticate(@RequestBody MemberDTO dto) {
         Member member = memberService.getByCredentials(dto.getId(), dto.getPassword(), passwordEncoder);
         if(member!=null) { // -> 토큰 생성
@@ -91,12 +93,12 @@ public class MemberController {
 //    public ResponseEntity<Member> show(@PathVariable String id) {
 //        return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
 //    }
-//
+
 //    @PostMapping("/user")
 //    public ResponseEntity<Member> create(@RequestBody Member vo) {
 //        return ResponseEntity.status(HttpStatus.OK).body(memberService.create(vo));
 //    }
-//
+
 //    @PutMapping("/user")
 //    public ResponseEntity<Member> update(@RequestBody Member vo) {
 //        Member result = memberService.update(vo);
