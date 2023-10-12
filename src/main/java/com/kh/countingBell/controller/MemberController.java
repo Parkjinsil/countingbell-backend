@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api")
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class MemberController {
 
@@ -40,14 +40,19 @@ public class MemberController {
 
 
 //    // 회원가입
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO dto) {
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
                 .id(dto.getId())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
-
+                .phone(dto.getPhone())
+                .nickname(dto.getNickname())
+                .gender(dto.getGender())
+                .age(dto.getAge())
+                .email(dto.getEmail())
+                .role(dto.getRole())
                 .build();
 
         // 서비스를 이용해 리포지터리에 유저 저장
@@ -55,13 +60,19 @@ public class MemberController {
         MemberDTO responseDTO = dto.builder()
                 .id(registerMember.getId())
                 .name(registerMember.getName())
+                .phone(registerMember.getPhone())
+                .nickname(registerMember.getNickname())
+                .gender(registerMember.getGender())
+                .age(registerMember.getAge())
+                .email(registerMember.getEmail())
+                .role(registerMember.getRole())
 
                 .build();
         return ResponseEntity.ok().body(responseDTO);
     }
 
     // 로그인 -> token
-    @PostMapping("/signin")
+    @PostMapping("/user/signin")
     public ResponseEntity authenticate(@RequestBody MemberDTO dto) {
         Member member = memberService.getByCredentials(dto.getId(), dto.getPassword(), passwordEncoder);
         if(member!=null) { // -> 토큰 생성

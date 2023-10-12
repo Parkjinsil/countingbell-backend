@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing
-@EnableJpaRepositories(basePackages = "com.kh.youtube")
+@EnableJpaRepositories(basePackages = "com.kh.countingbell")
 public class JpaConfig {
 
     @PersistenceContext
