@@ -19,6 +19,7 @@ public class LocationService {
     @Autowired
     private LocationDAO locationDAO;
 
+    @Autowired
     private RestaurantDAO restaurantDAO;
 
     public List<Location> showAll() {

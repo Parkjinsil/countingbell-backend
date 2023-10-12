@@ -29,13 +29,13 @@ dependencies {
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	// QueryDSL
+//	// QueryDSL
 	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	// JJWT
+//	// JJWT
 	implementation "io.jsonwebtoken:jjwt-api:0.11.5"
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:0.11.5"
 	runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.11.5"
@@ -50,9 +50,9 @@ tasks.named('test') {
 //// QueryDSL 관련 여기부터 추가(위에 주석포함)
 //def generated = 'src/main/generated'
 //
-//// clean {
-//// delete file (generate)
-//// }
+// clean {
+// delete file (generated)
+// }
 //
 //querydsl {
 //	jpa = true
