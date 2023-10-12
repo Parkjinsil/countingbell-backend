@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/*")
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class MemberController {
 
@@ -42,6 +42,7 @@ public class MemberController {
 //    // 회원가입
     @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO dto) {
+        log.info("dto" + dto);
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
                 .id(dto.getId())
@@ -66,7 +67,6 @@ public class MemberController {
                 .age(registerMember.getAge())
                 .email(registerMember.getEmail())
                 .role(registerMember.getRole())
-
                 .build();
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -95,15 +95,15 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
     }
 
-//    @GetMapping("/user")
-//    public ResponseEntity<List<Member>> showAll() {
-//        return ResponseEntity.status(HttpStatus.OK).body(memberService.showAll());
-//    }
-//
-//    @GetMapping("/user/{id}")
-//    public ResponseEntity<Member> show(@PathVariable String id) {
-//        return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
-//    }
+    @GetMapping("/user")
+    public ResponseEntity<List<Member>> showAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.showAll());
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Member> show(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
+    }
 
 //    @PostMapping("/user")
 //    public ResponseEntity<Member> create(@RequestBody Member vo) {

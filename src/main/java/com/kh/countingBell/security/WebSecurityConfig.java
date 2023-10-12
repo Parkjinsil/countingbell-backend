@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/public/**")).permitAll()
                 .anyRequest().authenticated();
-//        .anyRequest().permitAll();
+//                .anyRequest().permitAll();
 
         // anyRequest.permitAll()
         // authenticated...
