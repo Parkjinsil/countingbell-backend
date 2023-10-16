@@ -1,6 +1,7 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Food;
+import com.kh.countingBell.domain.QDiscount;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.FoodService;
 import com.kh.countingBell.service.RestaurantService;

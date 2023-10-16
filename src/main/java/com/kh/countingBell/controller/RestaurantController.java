@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/*")
 @Log4j2
+@CrossOrigin(origins={"*"}, maxAge = 6000)
 public class RestaurantController {
 
     @Autowired

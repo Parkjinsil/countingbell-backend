@@ -4,7 +4,7 @@ import com.kh.countingBell.domain.*;
 import com.kh.countingBell.security.TokenProvider;
 import com.kh.countingBell.service.DiscountService;
 import com.kh.countingBell.service.MemberService;
-import com.kh.countingBell.service.PhotoService;
+
 import com.kh.countingBell.service.ReviewService;
 import com.kh.countingBell.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +24,9 @@ import java.util.List;
 public class MemberController {
 
     @Autowired
+    private TokenProvider tokenProvider;
+
+    @Autowired
     private MemberService memberService;
 
     @Autowired
@@ -32,14 +35,15 @@ public class MemberController {
     @Autowired
     private ReservationService reservation;
 
-    @Autowired
-    private TokenProvider tokenProvider;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // 회원가입
+
+
+//    // 회원가입
     @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO dto) {
+        log.info("dto" + dto);
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
                 .id(dto.getId())
@@ -101,24 +105,24 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<Member> create(@RequestBody Member vo) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.create(vo));
-    }
+//    @PostMapping("/user")
+//    public ResponseEntity<Member> create(@RequestBody Member vo) {
+//        return ResponseEntity.status(HttpStatus.OK).body(memberService.create(vo));
+//    }
 
-    @PutMapping("/user")
-    public ResponseEntity<Member> update(@RequestBody Member vo) {
-        Member result = memberService.update(vo);
-        if(result!=null) {
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<Member> delete(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
-    }
+//    @PutMapping("/user")
+//    public ResponseEntity<Member> update(@RequestBody Member vo) {
+//        Member result = memberService.update(vo);
+//        if(result!=null) {
+//            return ResponseEntity.status(HttpStatus.OK).body(result);
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//    }
+//
+//    @DeleteMapping("/user/{id}")
+//    public ResponseEntity<Member> delete(@PathVariable String id) {
+//        return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
+//    }
 
     //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
     @GetMapping("/member/{user}/reservation")
@@ -129,30 +133,3 @@ public class MemberController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

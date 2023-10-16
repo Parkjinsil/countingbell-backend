@@ -6,9 +6,10 @@ import com.kh.countingBell.domain.Restaurant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface RestaurantDAO extends JpaRepository<Restaurant, Integer> {
 
     // 지역에 따른 식당 조회

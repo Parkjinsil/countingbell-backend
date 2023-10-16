@@ -4,9 +4,10 @@ import com.kh.countingBell.domain.Reservation;
 import com.kh.countingBell.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ReviewDAO extends JpaRepository<Review,Integer> {
 
     //식당 1개에 따른 리뷰

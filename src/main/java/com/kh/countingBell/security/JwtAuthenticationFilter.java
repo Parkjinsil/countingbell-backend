@@ -18,9 +18,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter { // 한 번만 인증하는 필터
+
     @Autowired
-    private TokenProvider tokenProvider;
+    private  TokenProvider tokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,18 +40,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-            securityContext.setAuthentication(authentication);
-            SecurityContextHolder.setContext(securityContext);
+            securityContext.setAuthentication(authentication);  // 위에서 담은 사용자 정보 담기
+            SecurityContextHolder.setContext(securityContext); // securityContext 정보 담기
         }
+
         filterChain.doFilter(request, response);
     }
 
-    private  String parseBearerToken(HttpServletRequest request) {
+    private String parseBearerToken(HttpServletRequest request) {
         // Http 요청의 헤더를 파싱해 Bearer 토큰을 리턴한다.
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
-            return  bearerToken.substring(7);
+            return bearerToken.substring(7); // 7부터 가지고 오겠다
         }
         return null;
     }
+
+
 }
