@@ -10,8 +10,14 @@ import com.kh.countingBell.service.PhotoService;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +34,7 @@ public class RestaurantController {
     private ReservationService reservationService;
 
     @Autowired
-    private RestaurantService restaurant;
+    private RestaurantService restaurantService;
 
     @Autowired
     private DiscountService discount;
@@ -73,10 +79,42 @@ public class RestaurantController {
     }
 
 
+    // 식당 전체 조회 : GET = http://localhost:8080/api/restaurant
+//    @GetMapping("/public/restaurant")
+//    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
+//
+//        // 정렬
+//        Sort sort = Sort.by("resCode").descending();
+//
+//        // 한 페이지에 10개씩
+//        Pageable pageable = PageRequest.of(page-1, 20, sort);
+//
+//        // 동적 쿼리를 위한 QueryDSL을 사용한 코드들 추가
+//        // 1. Q도메인 클래스 가져와야 함
+//        QRestaurant qRestaurant = QRestaurant.restaurant;
+//
+//        // 2. BooleanBuilder는 where문에 들어가는 조건들 넣어주는 컨테이너
+//        BooleanBuilder builder = new BooleanBuilder();
+//
+//        if(food!=null) {
+//            // 3. 원하는 조건은 필드값과 같이 결합해서 생성
+//            BooleanExpression foodExpression = qRestaurant.food.foodCode.eq(food);
+//
+//
+//            // 4. 만들어진 조건은 where문에 and나 or 같은 키워드와 결합한다.
+//            builder.and(foodExpression);
+//        }
+//        Page<Restaurant> result = restaurantService.showAll(pageable, builder);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+//
+//    }
+
+
     @GetMapping("/restaurant")
     public ResponseEntity<List<Restaurant>> showAllRestaurant() {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.showAll());
+            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.showAll());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -85,7 +123,7 @@ public class RestaurantController {
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.show(id));
+            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.show(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -94,7 +132,7 @@ public class RestaurantController {
     @PostMapping("/restaurant")
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.create(vo));
+            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.create(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -103,7 +141,7 @@ public class RestaurantController {
     @PutMapping("/restaurant")
     public ResponseEntity<Restaurant> updateRestaurant(@RequestBody Restaurant vo) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.update(vo));
+            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.update(vo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -112,7 +150,7 @@ public class RestaurantController {
     @DeleteMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> deleteRestaurant(@PathVariable int id) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurant.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -120,7 +158,7 @@ public class RestaurantController {
 
     @GetMapping("/restaurant/{id}/location")
     public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
+        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.findByLocalCode(id));
     }
 
     //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation
