@@ -4,6 +4,7 @@ import com.kh.countingBell.domain.Member;
 import com.kh.countingBell.repo.MemberDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +40,14 @@ public class MemberService {
         Member target = memberDAO.findById(id).orElse(null);
         memberDAO.delete(target);
         return target;
+    }
+
+    public Member getByCredentials(String id, String password, PasswordEncoder encoder) {
+        Member member = memberDAO.findById(id).orElse(null);
+        if(member!=null && encoder.matches(password, member.getPassword())) {
+            return member;
+        }
+        return null;
     }
 
 }
