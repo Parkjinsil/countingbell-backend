@@ -22,9 +22,9 @@ public class MenuService {
     @Autowired
     private RestaurantDAO restaurantDAO;
 
-    public Page<Menu> showAll(Pageable pageable, BooleanBuilder builder) {
+    public Page<Menu> showAll(Pageable pageable) {
 
-        return menuDAO.findAll(builder, pageable);
+        return menuDAO.findAll(pageable);
     }
 
     public Menu show(int id) {

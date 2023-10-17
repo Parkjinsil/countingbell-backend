@@ -45,21 +45,16 @@ public class MenuController {
 
     // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
     @GetMapping("/public/menu")
-    public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="restaurant", required = false) Integer restaurant) {
+    public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page) {
        // 정렬
-        Sort sort = Sort.by("resCode").descending();
+        Sort sort = Sort.by("menuCode").descending();
 
         // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(-1, 20, sort);
+        Pageable pageable = PageRequest.of(1, 10, sort);
 
-        QMenu qMenu = QMenu.menu;
-        BooleanBuilder builder = new BooleanBuilder();
+        Page<Menu> result = menuService.showAll(pageable);
 
-        if(restaurant != null) {
-            BooleanExpression expression = qMenu.restaurant.resCode.eq(restaurant);
-            builder.and(expression);
-        }
-        Page<Menu> result = menuService.showAll(pageable, builder);
+
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
@@ -74,6 +69,7 @@ public class MenuController {
         }
     }
 
+    // 메뉴 등록
     @PostMapping("/menu")
     public ResponseEntity<Menu> createMenu(@RequestParam(value = "resCode", required = true) Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
@@ -113,7 +109,7 @@ public class MenuController {
 
 
 
-
+// 메뉴 수정
     @PutMapping("/menu")
     public ResponseEntity<Menu> updateMenu(@RequestBody Menu vo) {
         try {
@@ -124,6 +120,7 @@ public class MenuController {
     }
 
 //    http://localhost:8080/api/menu/{id}
+    // 메뉴 삭제
     @DeleteMapping("/menu/{id}")
     public ResponseEntity<Menu> deleteMenu(@PathVariable int id) {
         try {
