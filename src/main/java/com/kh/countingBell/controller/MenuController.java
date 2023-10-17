@@ -1,12 +1,19 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Menu;
+import com.kh.countingBell.domain.QMenu;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +43,29 @@ public class MenuController {
     @Autowired
     private RestaurantService restaurant;
 
-    @GetMapping("/menu")
-    public ResponseEntity<List<Menu>> showAllMenu() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(menuService.showAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
+    @GetMapping("/public/menu")
+    public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="restaurant", required = false) Integer restaurant) {
+       // 정렬
+        Sort sort = Sort.by("resCode").descending();
+
+        // 한 페이지에 10개
+        Pageable pageable = PageRequest.of(-1, 20, sort);
+
+        QMenu qMenu = QMenu.menu;
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(restaurant != null) {
+            BooleanExpression expression = qMenu.restaurant.resCode.eq(restaurant);
+            builder.and(expression);
         }
+        Page<Menu> result = menuService.showAll(pageable, builder);
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
-    @GetMapping("/menu/{id}")
+    
+    // 메뉴 1개 조회 : GET - http://localhost:8080/api/menu/1
+    @GetMapping("/public/menu/{id}")
     public ResponseEntity<Menu> showMenu(@PathVariable int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(menuService.show(id));
