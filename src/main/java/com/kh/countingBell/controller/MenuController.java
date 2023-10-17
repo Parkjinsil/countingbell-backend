@@ -54,15 +54,6 @@ public class MenuController {
         }
     }
 
-//    @PostMapping("/menu")
-//    public ResponseEntity<Menu> createMenu(@RequestBody Menu vo) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(menu.create(vo));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
-//
     @PostMapping("/menu")
     public ResponseEntity<Menu> createMenu(@RequestParam(value = "resCode", required = true) Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
@@ -112,6 +103,7 @@ public class MenuController {
         }
     }
 
+//    http://localhost:8080/api/menu/{id}
     @DeleteMapping("/menu/{id}")
     public ResponseEntity<Menu> deleteMenu(@PathVariable int id) {
         try {
@@ -120,11 +112,5 @@ public class MenuController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-
-
-
-
-
 
 }
