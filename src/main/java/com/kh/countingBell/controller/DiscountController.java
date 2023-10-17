@@ -1,6 +1,7 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Discount;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.DiscountService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
@@ -14,6 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/*")
+@CrossOrigin(origins={"*"}, maxAge = 6000)
 public class DiscountController {
 
     @Autowired
@@ -29,10 +31,34 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.OK).body(discount.show(id));
     }
 
+//    @PostMapping("/discount")
+//    public ResponseEntity<Discount> createDiscount(@RequestBody Discount vo){
+//        return ResponseEntity.status(HttpStatus.OK).body(discount.create(vo));
+//    }
+
     @PostMapping("/discount")
-    public ResponseEntity<Discount> createDiscount(@RequestBody Discount vo){
+    public ResponseEntity<Discount> createDiscount(@RequestParam(value = "disDesc", required = true) String disDesc,
+                                                   @RequestParam(value = "disPeriod", required = true) String disPeriod,
+                                                   @RequestParam(value = "resCode", required = true) Integer resCode
+    ){
+        log.info("disDesc:"+disDesc);
+        log.info("disPeriod:"+disPeriod);
+        log.info("resCode:"+resCode);
+
+        Discount vo = new Discount();
+        vo.setDisDesc(disDesc);
+        vo.setDisPeriod(disPeriod);
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setResCode(resCode);
+        vo.setRestaurant(restaurant);
+
         return ResponseEntity.status(HttpStatus.OK).body(discount.create(vo));
     }
+
+
+
+
 
     @PutMapping("/discount")
     public ResponseEntity<Discount> updateDiscount(@RequestBody Discount vo) {
