@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.mapping.Join;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class Menu {
 
     @Id
@@ -28,6 +30,7 @@ public class Menu {
 
     @Column(name="menu_picture")
     private String menuPicture;
+
 
     @ManyToOne
     @JoinColumn(name="res_code")
