@@ -6,6 +6,10 @@ import com.kh.countingBell.service.DiscountService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +25,7 @@ public class DiscountController {
     @Autowired
     private DiscountService discount;
 
-    @GetMapping("/discount")
+    @GetMapping("/public/discount")
     public ResponseEntity<List<Discount>> showDiscountList() {
         return ResponseEntity.status(HttpStatus.OK).body(discount.showAll());
     }
