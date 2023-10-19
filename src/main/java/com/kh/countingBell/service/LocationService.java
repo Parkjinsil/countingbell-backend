@@ -7,6 +7,8 @@ import com.kh.countingBell.repo.LocationDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +24,9 @@ public class LocationService {
     @Autowired
     private RestaurantDAO restaurantDAO;
 
-    public List<Location> showAll() {
-        return locationDAO.findAll();
+    public Page<Location> showAll(Pageable pageable) {
+
+        return locationDAO.findAll(pageable);
     }
 
     public Location show(int id) {

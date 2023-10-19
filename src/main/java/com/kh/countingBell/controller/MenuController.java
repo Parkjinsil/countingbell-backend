@@ -111,12 +111,34 @@ public class MenuController {
 
     // 메뉴 수정
     @PutMapping("/menu")
-    public ResponseEntity<Menu> updateMenu(@RequestBody Menu vo) {
+    public ResponseEntity<Menu> updateMenu(@RequestParam(value = "resCode", required = true) Integer resCode,
+                                           @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
+                                           @RequestParam(value = "menuName", required = true) String menuName,
+                                           @RequestParam(value = "menuPrice", required = true) String menuPrice) {
+        String originalPhoto = menuPicture.getOriginalFilename();
+        String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
+        String uuid = UUID.randomUUID().toString();
+        String savePhoto = uploadPath + File.separator + uuid + "_" + realImage;
+        Path pathPhoto = Paths.get(savePhoto);
+
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(menuService.update(vo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            menuPicture.transferTo(pathPhoto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        Menu vo = new Menu();
+        vo.setMenuPicture(uuid + "_" + realImage);
+        vo.setMenuName(menuName);
+        vo.setMenuPrice(menuPrice);
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setResCode(resCode);
+        vo.setRestaurant(restaurant);
+
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
     }
 
     //    http://localhost:8080/api/menu/{id}
