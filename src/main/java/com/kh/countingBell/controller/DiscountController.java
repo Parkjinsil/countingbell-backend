@@ -66,6 +66,9 @@ public class DiscountController {
 
     @PutMapping("/discount")
     public ResponseEntity<Discount> updateDiscount(@RequestBody Discount vo) {
+
+        log.info("vo:"+vo);
+
        Discount result = discount.update(vo);
        if(result!=null) {
            return ResponseEntity.status(HttpStatus.OK).body(result);
