@@ -46,7 +46,7 @@ public class MenuController {
     // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
     @GetMapping("/public/menu")
     public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page) {
-       // 정렬
+        // 정렬
         Sort sort = Sort.by("menuCode").descending();
 
         // 한 페이지에 10개
@@ -58,7 +58,7 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
-    
+
     // 메뉴 1개 조회 : GET - http://localhost:8080/api/menu/1
     @GetMapping("/public/menu/{id}")
     public ResponseEntity<Menu> showMenu(@PathVariable int id) {
@@ -92,14 +92,14 @@ public class MenuController {
             throw new RuntimeException(e);
         }
 
-            Menu vo = new Menu();
-            vo.setMenuPicture(uuid + "_" + realImage);
-            vo.setMenuName(menuName);
-            vo.setMenuPrice(menuPrice);
+        Menu vo = new Menu();
+        vo.setMenuPicture(uuid + "_" + realImage);
+        vo.setMenuName(menuName);
+        vo.setMenuPrice(menuPrice);
 
-            Restaurant restaurant = new Restaurant();
-            restaurant.setResCode(resCode);
-            vo.setRestaurant(restaurant);
+        Restaurant restaurant = new Restaurant();
+        restaurant.setResCode(resCode);
+        vo.setRestaurant(restaurant);
 
 
 
@@ -109,7 +109,7 @@ public class MenuController {
 
 
 
-// 메뉴 수정
+    // 메뉴 수정
     @PutMapping("/menu")
     public ResponseEntity<Menu> updateMenu(@RequestBody Menu vo) {
         try {
@@ -119,7 +119,7 @@ public class MenuController {
         }
     }
 
-//    http://localhost:8080/api/menu/{id}
+    //    http://localhost:8080/api/menu/{id}
     // 메뉴 삭제
     @DeleteMapping("/menu/{id}")
     public ResponseEntity<Menu> deleteMenu(@PathVariable int id) {
