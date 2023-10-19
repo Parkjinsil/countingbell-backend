@@ -50,9 +50,15 @@ public class MenuController {
         Sort sort = Sort.by("menuCode").descending();
 
         // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(1, 10, sort);
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
 
         Page<Menu> result = menuService.showAll(pageable);
+        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
+        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
+        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
+        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
+        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
+        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
 
 
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
