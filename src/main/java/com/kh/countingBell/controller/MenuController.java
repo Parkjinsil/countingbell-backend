@@ -117,7 +117,8 @@ public class MenuController {
 
     // 메뉴 수정
     @PutMapping("/menu")
-    public ResponseEntity<Menu> updateMenu(@RequestParam(value = "resCode", required = true) Integer resCode,
+    public ResponseEntity<Menu> updateMenu(@RequestParam(value = "menuCode", required = true) Integer menuCode,
+                                           @RequestParam(value = "resCode", required = true) Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
@@ -134,6 +135,7 @@ public class MenuController {
         }
 
         Menu vo = new Menu();
+        vo.setMenuCode(menuCode);
         vo.setMenuPicture(uuid + "_" + realImage);
         vo.setMenuName(menuName);
         vo.setMenuPrice(menuPrice);
