@@ -1,12 +1,13 @@
 package com.kh.countingBell.service;
 
-import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
-import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.MenuDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,9 @@ public class MenuService {
     @Autowired
     private RestaurantDAO restaurantDAO;
 
-    public List<Menu> showAll() {
-        return menuDAO.findAll();
+    public Page<Menu> showAll(Pageable pageable) {
+
+        return menuDAO.findAll(pageable);
     }
 
     public Menu show(int id) {

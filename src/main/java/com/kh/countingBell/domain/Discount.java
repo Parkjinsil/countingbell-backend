@@ -30,3 +30,4 @@ public class Discount {
     private Restaurant restaurant;
 
 }
+
