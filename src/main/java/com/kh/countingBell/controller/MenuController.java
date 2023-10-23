@@ -3,6 +3,7 @@ package com.kh.countingBell.controller;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.QMenu;
 import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.testDTO;
 import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
 import com.querydsl.core.BooleanBuilder;
@@ -119,13 +120,15 @@ public class MenuController {
     @PutMapping("/menu")
     public ResponseEntity<Menu> updateMenu(@RequestParam(value = "menuCode", required = true) Integer menuCode,
                                            @RequestParam(value = "resCode", required = true) Integer resCode,
-                                           @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
+                                           MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
 
+        log.info("들어옴?");
+        log.info(menuPicture.getOriginalFilename());
 
-        String newPhoto = menuPicture.getOriginalFilename();
-        String realImage = newPhoto.substring(newPhoto.lastIndexOf("\\")+1);
+        String originalPhoto = menuPicture.getOriginalFilename();
+        String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
         String uuid = UUID.randomUUID().toString();
         String savePhoto = uploadPath + File.separator + uuid + "_" + realImage;
         Path pathPhoto = Paths.get(savePhoto);
@@ -145,6 +148,12 @@ public class MenuController {
         Restaurant restaurant = new Restaurant();
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
+
+        log.info("menuPicture : " + menuPicture);
+        log.info("menuName : " + menuName);
+        log.info("menuPrice : " + menuPrice);
+        log.info("menuCode : " + menuCode);
+        log.info("resCode : " + resCode);
 
  return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
     }
