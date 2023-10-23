@@ -130,26 +130,39 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurant")
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant vo) {
+    public ResponseEntity<Restaurant> createRestaurant(@RequestParam(value="resName", required = true)String resName,
+                                                       @RequestParam(value="resAddr", required = true)String resAddr,
+                                                       @RequestParam(value="resPhone", required = true)String resPhone,
+                                                       @RequestParam(value="resOpenHour", required = true)String resOpenHour,
+                                                       @RequestParam(value="resClose", required = true)String resClose,
+                                                       @RequestParam(value="resDesc", required = true)String resDesc,
+                                                       @RequestParam(value="localCode", required = true) Integer localCode,
+                                                       @RequestParam(value = "foodCode", required = true) Integer foodCode,
+                                                       @RequestParam(value = "id", required = true) String id) {
+        Restaurant res = new Restaurant();
 
-        Restaurant restaurant = new Restaurant();
-        restaurant.setResName(vo.getResName());
-        restaurant.setResAddr(vo.getResAddr());
-        restaurant.setResPhone(vo.getResPhone());
-        restaurant.setResOpenHour(vo.getResOpenHour());
-        restaurant.setResClose(vo.getResClose());
-        restaurant.setResDesc(vo.getResDesc());
+        res.setResName(resName);
+        res.setResAddr(resAddr);
+        res.setResPhone(resPhone);
+        res.setResOpenHour(resOpenHour);
+        res.setResClose(resClose);
+        res.setResDesc(resDesc);
+
+        Location loc = new Location();
+        loc.setLocalCode(localCode);
+        res.setLocation(loc);
 
         Food food = new Food();
-        food.setFoodCode(vo.getFood().getFoodCode());
+        food.setFoodCode(foodCode);
+        res.setFood(food);
 
-        Location location = new Location();
-        location.setLocalCode(vo.getLocation().getLocalCode());
+        Member mem = new Member();
+        mem.setId(id);
+        res.setMember(mem);
 
-        Member member = new Member();
-        member.setId(vo.getMember().getId());
 
-        return ResponseEntity.ok().body(restaurant);
+
+        return ResponseEntity.ok().body(restaurantService.create(res));
 
     }
 
