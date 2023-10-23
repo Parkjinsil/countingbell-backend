@@ -120,7 +120,7 @@ public class MenuController {
     @PutMapping("/menu")
     public ResponseEntity<Menu> updateMenu(@RequestParam(value = "menuCode", required = true) Integer menuCode,
                                            @RequestParam(value = "resCode", required = true) Integer resCode,
-                                           MultipartFile menuPicture,
+                                           @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
 
