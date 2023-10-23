@@ -131,11 +131,9 @@ public class RestaurantController {
 
     @PostMapping("/restaurant")
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant vo) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.create(vo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        Restaurant restaurant = restaurantService.create(vo);
+        return ResponseEntity.ok().body(restaurant);
+
     }
 
     @PutMapping("/restaurant")
