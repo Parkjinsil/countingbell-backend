@@ -131,8 +131,26 @@ public class RestaurantController {
 
     @PostMapping("/restaurant")
     public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant vo) {
-        Restaurant restaurant = restaurantService.create(vo);
-        return ResponseEntity.ok().body(restaurant);
+        Restaurant res = new Restaurant();
+        res.setResName(vo.getResName());
+        res.setResAddr(vo.getResAddr());
+        res.setResPhone(vo.getResPhone());
+        res.setResOpenHour(vo.getResOpenHour());
+        res.setResClose(vo.getResClose());
+        res.setResDesc(vo.getResDesc());
+
+        Location loc = new Location();
+        loc.setLocalCode(vo.getLocation().getLocalCode());
+
+        Food food = new Food();
+        food.setFoodCode(vo.getFood().getFoodCode());
+
+        Member mem = new Member();
+        mem.setId(vo.getMember().getId());
+
+
+
+        return ResponseEntity.ok().body(restaurantService.create(res));
 
     }
 
