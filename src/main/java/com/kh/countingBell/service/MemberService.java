@@ -1,6 +1,7 @@
 package com.kh.countingBell.service;
 
 import com.kh.countingBell.domain.Member;
+import com.kh.countingBell.domain.MemberDTO;
 import com.kh.countingBell.repo.MemberDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,20 @@ public class MemberService {
         }
         return null;
     }
+
+    // 아이디 찾기
+    public String searchId(MemberDTO memberDTO)
+    {
+        return memberDAO.searchId(memberDTO.getName(), memberDTO.getPhone());
+
+    }
+
+    // 패스워드 찾기
+//    public String searchPwd(MemberDTO memberDTO)
+//    {
+//        return memberDAO.searchPwd(memberDTO.getName(), memberDTO.getPhone());
+//
+//    }
 
 }
 

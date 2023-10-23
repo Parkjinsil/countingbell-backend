@@ -3,6 +3,7 @@ package com.kh.countingBell.controller;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.QMenu;
 import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.testDTO;
 import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
 import com.querydsl.core.BooleanBuilder;
@@ -53,12 +54,12 @@ public class MenuController {
         Pageable pageable = PageRequest.of(page-1, 10, sort);
 
         Page<Menu> result = menuService.showAll(pageable);
-        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
-        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
-        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
-        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
-        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
-        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
+//        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
+//        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
+//        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
+//        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
+//        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
+//        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
 
 
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
@@ -81,10 +82,10 @@ public class MenuController {
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
-        log.info("menuPicture : " + menuPicture);
-        log.info("menuName : " + menuName);
-        log.info("menuPrice : " + menuPrice);
-        log.info("resCode : " + resCode);
+//        log.info("menuPicture : " + menuPicture);
+//        log.info("menuName : " + menuName);
+//        log.info("menuPrice : " + menuPrice);
+//        log.info("resCode : " + resCode);
 
         String originalPhoto = menuPicture.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
@@ -122,6 +123,10 @@ public class MenuController {
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
+
+        log.info("들어옴?");
+        log.info(menuPicture.getOriginalFilename());
+
         String originalPhoto = menuPicture.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
         String uuid = UUID.randomUUID().toString();
@@ -144,9 +149,13 @@ public class MenuController {
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
 
+        log.info("menuPicture : " + menuPicture);
+        log.info("menuName : " + menuName);
+        log.info("menuPrice : " + menuPrice);
+        log.info("menuCode : " + menuCode);
+        log.info("resCode : " + resCode);
 
-
-        return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
+ return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
     }
 
     //    http://localhost:8080/api/menu/{id}

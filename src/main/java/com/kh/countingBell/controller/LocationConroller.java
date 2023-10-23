@@ -29,14 +29,15 @@ public class LocationConroller {
     @Autowired
     private RestaurantService restaurant;
 
-    // 위치 전체 조회
+
+    // 위치 전체 조회 http://localhost:8080/api/public/location?page=1
     @GetMapping("/public/location")
     public ResponseEntity<List<Location>> showAllLocation(@RequestParam(name="page", defaultValue = "1") int page) {
         // 정렬
         Sort sort = Sort.by("localCode").descending();
 
         // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(1, 10, sort);
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
 
         Page<Location> result = location.showAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
