@@ -3,9 +3,11 @@ package com.kh.countingBell.controller;
 import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.RestaurantDTO;
 import com.kh.countingBell.service.LocationService;
 import com.kh.countingBell.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +29,10 @@ public class LocationConroller {
     private LocationService location;
 
     @Autowired
-    private RestaurantService restaurant;
+    private RestaurantService restaurantService;
+
+    @Autowired
+    private  LocationService locationService;
 
 
     // 위치 전체 조회 http://localhost:8080/api/public/location?page=1
@@ -91,9 +96,15 @@ public class LocationConroller {
     }
 
 
-    // 위치별 식당조회
-    @GetMapping("/location/{id}/restaurant")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findByLocalCode(id));
+    // 위치별 식당 조회 : http://localhost:8080/api/restaurant/5/location
+    @GetMapping("/restaurant/{id}/location")
+    public ResponseEntity<List<Restaurant>> findByLocalCode(@PathVariable int id) {
+        log.info("LocationController 위치별 식당 찾기 실행");
+        List<Restaurant> resList = restaurantService.findByLocalCode(id);
+        log.info("restaurantList : " + resList);
+
+        return ResponseEntity.ok().body(resList);
     }
+
+
 }

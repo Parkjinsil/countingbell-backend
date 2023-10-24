@@ -1,14 +1,13 @@
 package com.kh.countingBell.service;
 
-import com.kh.countingBell.domain.Food;
-import com.kh.countingBell.domain.Location;
-import com.kh.countingBell.domain.Menu;
-import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.*;
 import com.kh.countingBell.repo.FoodDAO;
 import com.kh.countingBell.repo.LocationDAO;
 import com.kh.countingBell.repo.MenuDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +29,7 @@ public class RestaurantService {
 
     @Autowired
     private LocationDAO locationDAO;
+
 
 
     // 식당 전체 조회
@@ -65,16 +65,22 @@ public class RestaurantService {
     }
 
 
-    // 지역에 따른 식당 조회
-    public List<Restaurant> findByLocalCode(int id) {
-        return restaurantDAO.findByLocalCode(id);
-    }
+
+
 
     // 음식종류에 따른 식당 조회
     public List<Restaurant> findResByFood(int id) {
         return restaurantDAO.findResByFood(id);
     }
 
+
+
+    // 지역에 따른 식당 조회
+    @Transactional
+    public List<Restaurant> findByLocalCode(int id) {
+
+        return restaurantDAO.findByLocalCode(id);
+    }
 
 
 

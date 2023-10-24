@@ -3,8 +3,10 @@ package com.kh.countingBell.controller;
 import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.QDiscount;
 import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.RestaurantDTO;
 import com.kh.countingBell.service.FoodService;
 import com.kh.countingBell.service.RestaurantService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +16,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/*")
+@CrossOrigin(origins={"*"}, maxAge = 6000)
+@Slf4j
 public class FoodController {
 
     @Autowired
     private FoodService food;
 
     @Autowired
-    private RestaurantService restaurant;
+    private RestaurantService restaurantService;
 
     @GetMapping("/food")
     public ResponseEntity<List<Food>> showAllFood() {
@@ -67,10 +71,15 @@ public class FoodController {
         }
     }
 
-    // 음식종류에 따른 식당 조회
+    // 음식종류에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/food
     @GetMapping("/restaurant/{id}/food")
     public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurant.findResByFood(id));
+        log.info("LocationController 음식타입별 식당 찾기 실행");
+        List<Restaurant> resList = restaurantService.findResByFood(id);
+        log.info("restaurantList : " + resList);
+
+        return ResponseEntity.ok().body(resList);
+
     }
 
 
