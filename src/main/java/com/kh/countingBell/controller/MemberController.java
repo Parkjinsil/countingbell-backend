@@ -7,7 +7,9 @@ import com.kh.countingBell.service.MemberService;
 
 import com.kh.countingBell.service.ReviewService;
 import com.kh.countingBell.service.*;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +37,17 @@ public class MemberController {
     @Autowired
     private ReservationService reservation;
 
+    @Autowired
+    private EmailService emailService;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    static final int tempPwd_size = 10;       //만드려고 하는 임시 비밀번호의 사이즈
+    private final String tempPwd = RandomStringUtils.randomAlphanumeric(tempPwd_size);
 
 
-    //    // 회원가입
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+    //  회원가입
     @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO dto) {
         log.info("dto" + dto);
@@ -102,15 +110,32 @@ public class MemberController {
     }
 
     // 패스워드 찾기 :: 수정해야 함!!!!!!!!///////////////////////
-//    @PostMapping("user/searchPwd")
-//    public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
-//        String userPwd = memberService.searchPwd(memberDTO);
-////        log.info("DB저장되어 있는 PWD : " + userPwd);
-////        log.info("랜덤하게 생성한 비밀번호 : " + tempPwd);
-//
-//        return null;
-//    }
+    @PostMapping("/searchPwd")
+    public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
+        String userPwd = memberService.searchPwd(memberDTO);
+        log.info("저장되어 있는 비밀번호 : " + userPwd);
+        log.info("임시로 생성한 비밀번호 : " + tempPwd);
+        try {
+            String result = emailService.sendEmail(memberDTO.getEmail(), tempPwd);
+            // 이메일 보내기가 성공하게 되면 DB에 정보 바꿔야 사용자가 변경된 비밀번호로 접근이 가능함
+            if (result.equals("Success")) {
+                // DB에서 맴버 객체 들고와서
+                Member member = memberService.findUserById(memberDTO.getId());
+                // 랜덤 생성한 비밀번호를 DB에 넣을 때 암호화해서 넘겨야 함
+                member.setPassword(passwordEncoder.encode(tempPwd));
 
+                Member updateMember = memberService.update(member);
+
+                if (updateMember != null)
+                    return ResponseEntity.ok().body(result);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
     //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review

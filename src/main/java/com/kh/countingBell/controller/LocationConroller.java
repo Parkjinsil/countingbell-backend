@@ -1,13 +1,10 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Location;
-import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Restaurant;
-import com.kh.countingBell.domain.RestaurantDTO;
 import com.kh.countingBell.service.LocationService;
 import com.kh.countingBell.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
