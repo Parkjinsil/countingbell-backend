@@ -24,7 +24,7 @@ import java.util.UUID;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PhotoController {
 
-    @Value("${coungtingbell.upload.path")
+    @Value("${countingbell.upload.path")
     private String uploadPath;
 
     @Autowired
