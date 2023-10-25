@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -33,8 +35,8 @@ public class RestaurantService {
 
 
     // 식당 전체 조회
-    public List<Restaurant> showAll() {
-        return restaurantDAO.findAll();
+    public Page<Restaurant> showAll(Pageable pageable) {
+        return restaurantDAO.findAll(pageable);
     }
 
     // 식당 상세 조회

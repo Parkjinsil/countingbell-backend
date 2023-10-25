@@ -90,46 +90,32 @@ public class RestaurantController {
 
 
 
-    // 식당 전체 조회 : GET = http://localhost:8080/api/restaurant
-//    @GetMapping("/public/restaurant")
-//    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
-//
-//        // 정렬
-//        Sort sort = Sort.by("resCode").descending();
-//
-//        // 한 페이지에 10개씩
-//        Pageable pageable = PageRequest.of(page-1, 20, sort);
-//
-//        // 동적 쿼리를 위한 QueryDSL을 사용한 코드들 추가
-//        // 1. Q도메인 클래스 가져와야 함
-//        QRestaurant qRestaurant = QRestaurant.restaurant;
-//
-//        // 2. BooleanBuilder는 where문에 들어가는 조건들 넣어주는 컨테이너
-//        BooleanBuilder builder = new BooleanBuilder();
-//
-//        if(food!=null) {
-//            // 3. 원하는 조건은 필드값과 같이 결합해서 생성
-//            BooleanExpression foodExpression = qRestaurant.food.foodCode.eq(food);
-//
-//
-//            // 4. 만들어진 조건은 where문에 and나 or 같은 키워드와 결합한다.
-//            builder.and(foodExpression);
-//        }
-//        Page<Restaurant> result = restaurantService.showAll(pageable, builder);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
-//
-//    }
+    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
+    @GetMapping("/public/restaurant")
+    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
 
 
-    @GetMapping("/restaurant")
-    public ResponseEntity<List<Restaurant>> showAllRestaurant() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.showAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        // 정렬
+        Sort sort = Sort.by("resCode").descending();
+
+        // 한 페이지에 10개
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
+
+        Page<Restaurant> result = restaurantService.showAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+
+
     }
+
+
+//    @GetMapping("/restaurant")
+//    public ResponseEntity<List<Restaurant>> showAllRestaurant() {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.showAll());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {

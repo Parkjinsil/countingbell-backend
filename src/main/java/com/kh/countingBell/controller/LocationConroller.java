@@ -28,8 +28,7 @@ public class LocationConroller {
     @Autowired
     private RestaurantService restaurantService;
 
-    @Autowired
-    private  LocationService locationService;
+
 
 
     // 위치 전체 조회 http://localhost:8080/api/public/location?page=1
