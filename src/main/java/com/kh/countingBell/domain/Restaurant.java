@@ -49,7 +49,6 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name="local_code" )
-    @JsonIgnore
     private Location location;
 
     @ManyToOne

@@ -87,6 +87,9 @@ public class RestaurantController {
     }
 
 
+
+
+
     // 식당 전체 조회 : GET = http://localhost:8080/api/restaurant
 //    @GetMapping("/public/restaurant")
 //    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
@@ -191,11 +194,6 @@ public class RestaurantController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-//    @GetMapping("/restaurant/{id}/location")
-//    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-//        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.findByLocalCode(id));
-//    }
 
     //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation
     @GetMapping("/restaurant/{id}/reservation")

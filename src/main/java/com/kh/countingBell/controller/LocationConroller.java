@@ -93,7 +93,7 @@ public class LocationConroller {
     }
 
 
-    // 위치별 식당 조회 : http://localhost:8080/api/restaurant/5/location
+    // 위치별 식당 전체 조회 : http://localhost:8080/api/restaurant/5/location
     @GetMapping("/restaurant/{id}/location")
     public ResponseEntity<List<Restaurant>> findByLocalCode(@PathVariable int id) {
         log.info("LocationController 위치별 식당 찾기 실행");
