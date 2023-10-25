@@ -53,7 +53,6 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name="food_code")
-//    @JsonIgnore
     private Food food;
 
 

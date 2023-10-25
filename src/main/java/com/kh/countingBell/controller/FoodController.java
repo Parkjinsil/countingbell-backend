@@ -1,11 +1,14 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Food;
-import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.FoodService;
 import com.kh.countingBell.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +27,24 @@ public class FoodController {
     @Autowired
     private RestaurantService restaurantService;
 
-    @GetMapping("/food")
-    public ResponseEntity<List<Food>> showAllFood() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(food.showAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    // 음식타입 전체 조회 : GET =  http://localhost:8080/api/public/food?page=1
+    @GetMapping("/public/food")
+    public ResponseEntity<List<Food>> showAllFood(@RequestParam(name="page", defaultValue = "1") int page ) {
+        // 정렬
+        Sort sort = Sort.by("foodCode").descending();
+
+        // 한 페이지에 10개
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
+
+        Page<Food> result = food.showAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+
+
     }
+
+
+
+
 
     @GetMapping("/food/{id}")
     public ResponseEntity<Food> showFood(@PathVariable int id) {
@@ -69,16 +82,6 @@ public class FoodController {
         }
     }
 
-    // 음식종류에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/food
-    @GetMapping("/restaurant/{id}/food")
-    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
-        log.info("LocationController 음식타입별 식당 찾기 실행");
-        List<Restaurant> resList = restaurantService.findResByFood(id);
-        log.info("restaurantList : " + resList);
-
-        return ResponseEntity.ok().body(resList);
-
-    }
 
 
 

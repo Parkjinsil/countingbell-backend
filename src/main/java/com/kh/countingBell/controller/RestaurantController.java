@@ -75,16 +75,19 @@ public class RestaurantController {
     }
 
 
-    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/1/restaurant
-    @GetMapping("/menu/{id}/restaurant")
-    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
-        log.info("menuController 식당별 메뉴 찾기 실행");
-        List<Menu> menuList = menuService.findByResCode(id);
-        log.info("menuList : " + menuList);
 
-        return ResponseEntity.ok().body(menuList);
+    // 음식종류에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/food
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
+        log.info("LocationController 음식타입별 식당 찾기 실행");
+        List<Restaurant> resList = restaurantService.findResByFood(id);
+        log.info("restaurantList : " + resList);
+
+        return ResponseEntity.ok().body(resList);
 
     }
+
+
 
 
 
@@ -108,14 +111,6 @@ public class RestaurantController {
     }
 
 
-//    @GetMapping("/restaurant")
-//    public ResponseEntity<List<Restaurant>> showAllRestaurant() {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.showAll());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
 
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {

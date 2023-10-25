@@ -38,6 +38,21 @@ public class MenuController {
     @Autowired
     private RestaurantService restaurant;
 
+
+
+    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/1/restaurant
+    @GetMapping("/menu/{id}/restaurant")
+    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
+        log.info("menuController 식당별 메뉴 찾기 실행");
+        List<Menu> menuList = menuService.findByResCode(id);
+        log.info("menuList : " + menuList);
+
+        return ResponseEntity.ok().body(menuList);
+
+    }
+
+
+
     // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
     @GetMapping("/public/menu")
     public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page) {
