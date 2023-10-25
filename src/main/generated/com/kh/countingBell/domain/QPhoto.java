@@ -24,7 +24,7 @@ public class QPhoto extends EntityPathBase<Photo> {
 
     public final StringPath photoName = createString("photoName");
 
-    public final StringPath photoUrl = createString("photoUrl");
+    public final StringPath resPhoto = createString("resPhoto");
 
     public final NumberPath<Integer> resPhotoCode = createNumber("resPhotoCode", Integer.class);
 
