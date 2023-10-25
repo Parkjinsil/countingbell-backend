@@ -2,7 +2,6 @@ package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.*;
 import com.kh.countingBell.security.TokenProvider;
-import com.kh.countingBell.service.DiscountService;
 import com.kh.countingBell.service.MemberService;
 
 import com.kh.countingBell.service.ReviewService;
@@ -37,6 +36,7 @@ public class MemberController {
     @Autowired
     private ReservationService reservation;
 
+
     @Autowired
     private EmailService emailService;
 
@@ -44,29 +44,29 @@ public class MemberController {
     private final String tempPwd = RandomStringUtils.randomAlphanumeric(tempPwd_size);
 
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
     //  회원가입
     @PostMapping("/user/signup")
-    public ResponseEntity register(@RequestBody MemberDTO dto) {
-        log.info("dto" + dto);
+    public ResponseEntity register(@RequestBody MemberDTO memberDTO) {
+        log.info("dto" + memberDTO);
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
-                .id(dto.getId())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .name(dto.getName())
-                .phone(dto.getPhone())
-                .nickname(dto.getNickname())
-                .gender(dto.getGender())
-                .age(dto.getAge())
-                .email(dto.getEmail())
-                .role(dto.getRole())
+                .id(memberDTO.getId())
+                .password(passwordEncoder.encode(memberDTO.getPassword()))
+                .name(memberDTO.getName())
+                .phone(memberDTO.getPhone())
+                .nickname(memberDTO.getNickname())
+                .gender(memberDTO.getGender())
+                .age(memberDTO.getAge())
+                .email(memberDTO.getEmail())
+                .role(memberDTO.getRole())
                 .build();
 
         // 서비스를 이용해 리포지터리에 유저 저장
         Member registerMember = memberService.create(member);
-        MemberDTO responseDTO = dto.builder()
+        MemberDTO responseDTO = memberDTO.builder()
                 .id(registerMember.getId())
                 .name(registerMember.getName())
                 .phone(registerMember.getPhone())
@@ -81,15 +81,16 @@ public class MemberController {
 
     // 로그인 -> token
     @PostMapping("/user/signin")
-    public ResponseEntity authenticate(@RequestBody MemberDTO dto) {
-        Member member = memberService.getByCredentials(dto.getId(), dto.getPassword(), passwordEncoder);
+    public ResponseEntity authenticate(@RequestBody MemberDTO memberDTO) {
+        Member member = memberService.getByCredentials(memberDTO.getId(), memberDTO.getPassword(), passwordEncoder);
+        log.info("member :: " + member);
+        log.info("member check :: " + (member != null));
         if (member != null) { // -> 토큰 생성
+            log.info("여기 들어오는가?");
             String token = tokenProvider.create(member);
-            MemberDTO responseDTO = MemberDTO.builder()
-                    .id(member.getId())
-                    .name(member.getName())
-                    .token(token)
-                    .build();
+            log.info("token :: ==>>>>> " + token);
+            MemberDTO responseDTO = MemberDTO.builder().id(member.getId()).name(member.getName()).token(token).build();
+
             return ResponseEntity.ok().body(responseDTO);
         } else {
             return ResponseEntity.badRequest().build();

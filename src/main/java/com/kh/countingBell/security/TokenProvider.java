@@ -4,19 +4,23 @@ import com.kh.countingBell.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Slf4j
 @Service
 public class TokenProvider {
-    private static final String SECRET_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    private static final String SECRET_KEY="FlRpX30MqDbiAkmlfArbrmVkDD4RqISskGZmBFax5oGVxzXXWUzTR5JyskiHMIV9M10icegkpi46AdvrcX1E6CmTUBc6IFbTPiD";
 
     public String create(Member member) {
         // 토큰 생성 -> 기한 지정 가능 (1일)
         Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
+
+        log.info("토큰 생성");
 
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY) // header에 들어갈 내용

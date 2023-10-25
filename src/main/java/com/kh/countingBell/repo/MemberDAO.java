@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface MemberDAO extends JpaRepository<Member, String>, QuerydslPredicateExecutor<Member> {
 
-    @Query(value = "SELECT * FROM member WHERE authority=:condition", nativeQuery = true)
-    List<Member> findByAuthority(String condition);
+    //@Query(value = "SELECT * FROM member WHERE authority=:condition", nativeQuery = true)
+   // List<Member> findByRoll(String condition);
 
     @Query(value = "SELECT id FROM member WHERE name=:name AND phone=:phone", nativeQuery = true)
     //Request processing failed:Use @Param for query method parameters 오류나서 @Param값 명시
