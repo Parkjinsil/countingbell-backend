@@ -46,6 +46,9 @@ public class RestaurantController {
     private ResCommentService comment;
 
     @Autowired
+    private MenuService menuService;
+
+    @Autowired
     private PickService pick;
 
     @Autowired
@@ -72,10 +75,15 @@ public class RestaurantController {
     }
 
 
-    // 식당 1개의 메뉴 조회
-    @GetMapping("/restaurant/{id}/menu")
+    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/1/restaurant
+    @GetMapping("/menu/{id}/restaurant")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(menu.findByResCode(id));
+        log.info("menuController 식당별 메뉴 찾기 실행");
+        List<Menu> menuList = menuService.findByResCode(id);
+        log.info("menuList : " + menuList);
+
+        return ResponseEntity.ok().body(menuList);
+
     }
 
 
@@ -184,10 +192,10 @@ public class RestaurantController {
         }
     }
 
-    @GetMapping("/restaurant/{id}/location")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.findByLocalCode(id));
-    }
+//    @GetMapping("/restaurant/{id}/location")
+//    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
+//        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.findByLocalCode(id));
+//    }
 
     //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation
     @GetMapping("/restaurant/{id}/reservation")

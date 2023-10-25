@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter { // 한 번만 인증하는 필터
 
@@ -50,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 한 번�
     private String parseBearerToken(HttpServletRequest request) {
         // Http 요청의 헤더를 파싱해 Bearer 토큰을 리턴한다.
         String bearerToken = request.getHeader("Authorization");
+        log.info("bearerToken : " + bearerToken);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7); // 7부터 가지고 오겠다
         }

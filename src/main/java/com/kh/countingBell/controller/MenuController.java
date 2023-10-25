@@ -1,13 +1,9 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Menu;
-import com.kh.countingBell.domain.QMenu;
 import com.kh.countingBell.domain.Restaurant;
-import com.kh.countingBell.domain.testDTO;
 import com.kh.countingBell.service.MenuService;
 import com.kh.countingBell.service.RestaurantService;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -78,10 +72,11 @@ public class MenuController {
 
     // 메뉴 등록
     @PostMapping("/menu")
-    public ResponseEntity<Menu> createMenu(@RequestParam(value = "resCode", required = true) Integer resCode,
+    public ResponseEntity<Menu> createMenu(Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
-                                           @RequestParam(value = "menuName", required = true) String menuName,
-                                           @RequestParam(value = "menuPrice", required = true) String menuPrice) {
+                                           String menuName,
+                                           String menuDesc,
+                                           String menuPrice) {
 //        log.info("menuPicture : " + menuPicture);
 //        log.info("menuName : " + menuName);
 //        log.info("menuPrice : " + menuPrice);
@@ -102,6 +97,7 @@ public class MenuController {
         Menu vo = new Menu();
         vo.setMenuPicture(uuid + "_" + realImage);
         vo.setMenuName(menuName);
+        vo.setMenuDesc(menuDesc);
         vo.setMenuPrice(menuPrice);
 
         Restaurant restaurant = new Restaurant();
@@ -122,6 +118,7 @@ public class MenuController {
                                            @RequestParam(value = "resCode", required = true) Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
                                            @RequestParam(value = "menuName", required = true) String menuName,
+                                           @RequestParam(value = "menuDesc", required = true) String menuDesc,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
 
         log.info("들어옴?");
@@ -143,6 +140,7 @@ public class MenuController {
         vo.setMenuCode(menuCode);
         vo.setMenuPicture(uuid + "_" + realImage);
         vo.setMenuName(menuName);
+        vo.setMenuDesc(menuDesc);
         vo.setMenuPrice(menuPrice);
 
         Restaurant restaurant = new Restaurant();
@@ -151,6 +149,7 @@ public class MenuController {
 
         log.info("menuPicture : " + menuPicture);
         log.info("menuName : " + menuName);
+        log.info("menuDesc : " + menuDesc);
         log.info("menuPrice : " + menuPrice);
         log.info("menuCode : " + menuCode);
         log.info("resCode : " + resCode);
@@ -168,5 +167,8 @@ public class MenuController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+
+
 
 }
