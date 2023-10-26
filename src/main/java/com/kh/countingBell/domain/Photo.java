@@ -19,8 +19,8 @@ public class Photo {
     @SequenceGenerator(name="photoSequence", sequenceName = "SEQ_PHOTO", allocationSize = 1)
     private int resPhotoCode;
 
-    @Column(name="photo_url")
-    private String photoUrl;
+    @Column(name="res_photo")
+    private String resPhoto;
 
     @Column(name="photo_name")
     private String photoName;
