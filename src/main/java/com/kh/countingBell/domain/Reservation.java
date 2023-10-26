@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
+import java.util.Date;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -19,14 +22,14 @@ public class Reservation {
     @SequenceGenerator(name = "reserSequence", sequenceName = "SEQ_RESERVATION", allocationSize = 1)
     private int reserCode;
 
-    @Column(name = "reser_com")
-    private String reserCom;
+    @Column(name="reser_per")
+    private Integer reserPer;
 
-    @Column(name = "reser_no")
-    private String reserNo;
+    @Column(name="reser_date")
+    private Date reserDate;
 
-    @Column(name = "reser_time")
-    private Timestamp reserTime;
+    @Column(name="reser_time")
+    private Time reserTime;
 
     @ManyToOne
     @JoinColumn(name = "id")

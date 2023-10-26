@@ -1,9 +1,12 @@
 package com.kh.countingBell.service;
 
+import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Review;
 import com.kh.countingBell.repo.ReviewDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,36 +16,41 @@ import java.util.List;
 public class ReviewService {
 
     @Autowired
-    private ReviewDAO dao;
+    private ReviewDAO reviewDAO;
 
+    public Page<Review> showAll(Pageable pageable) {
+
+        return reviewDAO.findAll(pageable);
+    }
     public List<Review> showAll() {
-        return dao.findAll();
+        return reviewDAO.findAll();
     }
 
     public Review show(int id) {
-        return dao.findById(id).orElse(null);
+        return reviewDAO.findById(id).orElse(null);
     }
 
 
     public Review create(Review review) {
-        return dao.save(review);
+        return reviewDAO.save(review);
     }
 
     public Review update(Review review) {
-        Review target = dao.findById(review.getReviewCode()).orElse(null);
+        Review target = reviewDAO.findById(review.getReviewCode()).orElse(null);
         if(target != null) {
-            return dao.save(review);
+            return reviewDAO.save(review);
         }
         return null;
     }
 
     public Review delete(int id) {
-        Review target = dao.findById(id).orElse(null);
-        dao.delete(target);
+        Review target = reviewDAO.findById(id).orElse(null);
+        reviewDAO.delete(target);
         return target;
     }
 
-    public List<Review> findByResCode(int code) { return dao.findByResCode(code); }
+    public List<Review> findByResCode(int resCode) { return reviewDAO.findByResCode(resCode); }
 
-    public List<Review> findById(String user){ return dao.findById(user); }
+    public List<Review> findById(String user){ return reviewDAO.findById(user); }
+
 }

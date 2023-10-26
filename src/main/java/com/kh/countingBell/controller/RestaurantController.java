@@ -91,12 +91,20 @@ public class RestaurantController {
         return ResponseEntity.ok().body(resList);
     }
 
+    // 종류 + 위치에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/1
+    @GetMapping("/restaurant/{foodCode}/{localCode}")
+    public ResponseEntity<List<Restaurant>> findResByFilter(@PathVariable int foodCode,
+                                                            @PathVariable int localCode) {
+        List<Restaurant> resList = restaurantService.findResByFilter(foodCode, localCode);
+
+        return ResponseEntity.ok().body(resList);
+    }
+
     // 식당 1개의 메뉴 조회
     @GetMapping("/restaurant/{id}/menu")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
     }
-
 
 
 
