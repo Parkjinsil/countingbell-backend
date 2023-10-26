@@ -47,7 +47,6 @@ public class MemberController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-
     //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
     @GetMapping("/member/{user}/review")
     public ResponseEntity<List<Review>> reviewById(@PathVariable String user) {
@@ -63,13 +62,11 @@ public class MemberController {
     }
 
 
-
     // 멤버전체 보기
     @GetMapping("/user")
     public ResponseEntity<List<Member>> showAll() {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.showAll());
     }
-
 
 
     // 멤버 1명 조회
@@ -79,33 +76,65 @@ public class MemberController {
     }
 
 
-
     // 회원 수정
-    @PutMapping("/user/update")
-    public ResponseEntity<Member> updateUser(@RequestBody Member member) {
-        try {
-            Member updateUser = memberService.show(member.getId());
-            // 새로운 사용자 정보로 업데이트
-            updateUser.setName(member.getName());
-            updateUser.setNickname(member.getNickname());
-            updateUser.setPassword(member.getPassword());
-            updateUser.setAge(member.getAge());
-            updateUser.setGender(member.getGender());
-            updateUser.setPhone(member.getPhone());
-            updateUser.setEmail(member.getEmail());
+    @PutMapping("/update")
+    public ResponseEntity updateMember(@RequestBody MemberDTO memberDTO) {
+        String id = memberDTO.getId();
 
-            Member updatedUser = memberService.update(updateUser);
+        // 기존 회원 정보 가져오기
+        Member existingMember = memberService.findUserById(id);
 
-            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (existingMember != null) {
+            // 업데이트할 정보가 존재하는 경우에만 업데이트
+            if (!memberDTO.getPassword().isEmpty()) {
+                existingMember.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+            }
+            if (memberDTO.getName() != null) {
+                existingMember.setName(memberDTO.getName());
+            }
+            if (memberDTO.getNickname() != null) {
+                existingMember.setNickname(memberDTO.getNickname());
+            }
+            if (memberDTO.getPhone() != null) {
+                existingMember.setPhone(memberDTO.getPhone());
+            }
+            if (memberDTO.getEmail() != null) {
+                existingMember.setEmail(memberDTO.getEmail());
+            }
+
+            // 회원 정보 업데이트
+            Member updatedMember = memberService.update(existingMember);
+
+            // 응답용 DTO 생성
+            MemberDTO responseDTO = memberDTO.builder()
+                    .id(updatedMember.getId())
+                    .name(updatedMember.getName())
+                    .phone(updatedMember.getPhone())
+                    .nickname(updatedMember.getNickname())
+                    .gender(updatedMember.getGender())
+                    .age(updatedMember.getAge())
+                    .email(updatedMember.getEmail())
+                    .role(updatedMember.getRole())
+                    .build();
+
+            return ResponseEntity.ok().body(responseDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 사용자가 없습니다.");
         }
     }
 
 
 
-    // 회원 삭제
 
+    // 회원 삭제
+    @DeleteMapping("/userInfo/{id}")
+    public ResponseEntity<Member> deleteUser(@PathVariable String id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
     //  회원가입
     @PostMapping("/user/signup")

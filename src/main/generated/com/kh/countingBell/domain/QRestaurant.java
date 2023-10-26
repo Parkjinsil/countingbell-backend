@@ -42,6 +42,10 @@ public class QRestaurant extends EntityPathBase<Restaurant> {
 
     public final StringPath resPhone = createString("resPhone");
 
+    public final NumberPath<Integer> resPicks = createNumber("resPicks", Integer.class);
+
+    public final StringPath resPicture = createString("resPicture");
+
     public QRestaurant(String variable) {
         this(Restaurant.class, forVariable(variable), INITS);
     }
