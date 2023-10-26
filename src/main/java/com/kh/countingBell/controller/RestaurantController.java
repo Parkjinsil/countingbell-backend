@@ -61,8 +61,6 @@ public class RestaurantController {
     @Autowired
     private PickService pick;
 
-
-
     // 식당 1개에 따른 찜 조회
     @GetMapping("/restaurant/{id}/pick")
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
@@ -92,6 +90,16 @@ public class RestaurantController {
 
         return ResponseEntity.ok().body(resList);
     }
+
+    // 종류 + 위치에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/1
+    @GetMapping("/restaurant/{foodCode}/{localCode}")
+    public ResponseEntity<List<Restaurant>> findResByFilter(@PathVariable int foodCode,
+                                                            @PathVariable int localCode) {
+        List<Restaurant> resList = restaurantService.findResByFilter(foodCode, localCode);
+
+        return ResponseEntity.ok().body(resList);
+    }
+
 
 
 
