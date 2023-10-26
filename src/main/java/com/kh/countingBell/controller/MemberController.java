@@ -47,6 +47,66 @@ public class MemberController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
+
+    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
+    @GetMapping("/member/{user}/review")
+    public ResponseEntity<List<Review>> reviewById(@PathVariable String user) {
+        return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
+    }
+
+
+    //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
+    @GetMapping("/member/{user}/reservation")
+    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String user) {
+        log.info("user : " + user);
+        return ResponseEntity.status(HttpStatus.OK).body(reservation.findById(user));
+    }
+
+
+
+    // 멤버전체 보기
+    @GetMapping("/user")
+    public ResponseEntity<List<Member>> showAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.showAll());
+    }
+
+
+
+    // 멤버 1명 조회
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Member> show(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
+    }
+
+
+
+    // 회원 수정
+    @PutMapping("/user/update")
+    public ResponseEntity<Member> updateUser(@RequestBody Member member) {
+        try {
+            Member updateUser = memberService.show(member.getId());
+            // 새로운 사용자 정보로 업데이트
+            updateUser.setName(member.getName());
+            updateUser.setNickname(member.getNickname());
+            updateUser.setPassword(member.getPassword());
+            updateUser.setAge(member.getAge());
+            updateUser.setGender(member.getGender());
+            updateUser.setPhone(member.getPhone());
+            updateUser.setEmail(member.getEmail());
+
+            Member updatedUser = memberService.update(updateUser);
+
+            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+
+    // 회원 삭제
+
+
     //  회원가입
     @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO memberDTO) {
@@ -136,32 +196,6 @@ public class MemberController {
             throw new RuntimeException(e);
         }
 
-    }
-
-
-    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
-    @GetMapping("/member/{user}/review")
-    public ResponseEntity<List<Review>> reviewById(@PathVariable String user) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
-    }
-
-    //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
-    @GetMapping("/member/{user}/reservation")
-    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String user) {
-        log.info("user : " + user);
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.findById(user));
-    }
-
-    // 멤버전체 보기
-    @GetMapping("/user")
-    public ResponseEntity<List<Member>> showAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.showAll());
-    }
-
-    // 멤버 1명 조회
-    @GetMapping("/user/{id}")
-    public ResponseEntity<Member> show(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
     }
 
 
