@@ -111,7 +111,7 @@ public class RestaurantController {
     }
 
 
-
+// 식당 1개 보기
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
         try {
@@ -158,6 +158,8 @@ public class RestaurantController {
 
     }
 
+    
+    // 식당 수정하기
     @PutMapping("/restaurant")
     public ResponseEntity<Restaurant> updateRestaurant(@RequestBody Restaurant vo) {
         try {
@@ -167,6 +169,7 @@ public class RestaurantController {
         }
     }
 
+    // 식당 삭제
     @DeleteMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> deleteRestaurant(@PathVariable int id) {
         try {
