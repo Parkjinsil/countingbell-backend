@@ -41,7 +41,11 @@ public class Restaurant {
     @Column(name="res_desc")
     private String resDesc;
 
+    @Column(name="res_picture")
+    private String resPicture;
 
+    @Column(name="res_picks")
+    private Integer resPicks;
 
     @ManyToOne
     @JoinColumn(name="local_code")
@@ -50,7 +54,6 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name="food_code")
     private Food food;
-
 
     @ManyToOne
     @JoinColumn(name="id")
