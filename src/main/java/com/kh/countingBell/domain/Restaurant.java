@@ -3,6 +3,7 @@ package com.kh.countingBell.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Restaurant {
 
@@ -45,7 +47,9 @@ public class Restaurant {
     private String resPicture;
 
     @Column(name="res_picks")
-    private Integer resPicks;
+    private int resPicks;
+
+
 
     @ManyToOne
     @JoinColumn(name="local_code")

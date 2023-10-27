@@ -4,10 +4,7 @@ import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Restaurant;
-import com.kh.countingBell.repo.FoodDAO;
-import com.kh.countingBell.repo.LocationDAO;
-import com.kh.countingBell.repo.MenuDAO;
-import com.kh.countingBell.repo.RestaurantDAO;
+import com.kh.countingBell.repo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,9 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantDAO restaurantDAO;
+
+    @Autowired
+    private MemberDAO memberDAO;
 
     @Autowired
     private FoodDAO foodDAO;
@@ -75,6 +75,15 @@ public class RestaurantService {
         return restaurantDAO.findResByFood(id);
     }
 
+    public Restaurant updatePicks(int id){
+        restaurantDAO.updatePicks(id);
+        return restaurantDAO.findById(id).orElse(null);
+    }
+
+    public Restaurant deletePicks(int id){
+        restaurantDAO.deletePicks(id);
+        return restaurantDAO.findById(id).orElse(null);
+    }
 
 
 

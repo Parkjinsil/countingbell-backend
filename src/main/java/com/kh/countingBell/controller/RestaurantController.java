@@ -10,15 +10,9 @@ import com.kh.countingBell.service.PhotoService;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,16 +50,16 @@ public class RestaurantController {
     private ResCommentService comment;
 
     @Autowired
-    private PickService pick;
+    private PickService pickService;
 
     @Autowired
     private MenuService menuService;
 
     // 식당 1개에 따른 찜 조회
-    @GetMapping("/restaurant/{id}/pick")
-    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
-    }
+//    @GetMapping("/restaurant/{id}/pick")
+//    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
+//        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
+//    }
 
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
@@ -140,16 +134,16 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurant")
-    public ResponseEntity<Restaurant> createRestaurant(@RequestParam(value="resName", required = true)String resName,
-                                                       @RequestParam(value="resAddr", required = true)String resAddr,
-                                                       @RequestParam(value="resPhone", required = true)String resPhone,
-                                                       @RequestParam(value="resOpenHour", required = true)String resOpenHour,
-                                                       @RequestParam(value="resClose", required = true)String resClose,
-                                                       @RequestParam(value="resDesc", required = true)String resDesc,
-                                                       @RequestParam(value="localCode", required = true) Integer localCode,
+    public ResponseEntity<Restaurant> createRestaurant(@RequestParam(value = "resName", required = true) String resName,
+                                                       @RequestParam(value = "resAddr", required = true) String resAddr,
+                                                       @RequestParam(value = "resPhone", required = true) String resPhone,
+                                                       @RequestParam(value = "resOpenHour", required = true) String resOpenHour,
+                                                       @RequestParam(value = "resClose", required = true) String resClose,
+                                                       @RequestParam(value = "resDesc", required = true) String resDesc,
+                                                       @RequestParam(value = "localCode", required = true) Integer localCode,
                                                        @RequestParam(value = "foodCode", required = true) Integer foodCode,
                                                        @RequestParam(value = "id", required = true) String id,
-                                                       @RequestParam(value="resPicks", required = true)Integer resPicks,
+                                                       @RequestParam(value = "resPicks", required = true) Integer resPicks,
                                                        @RequestPart(value = "resPicture", required = true) MultipartFile resPicture) {
 
 
@@ -157,7 +151,7 @@ public class RestaurantController {
         log.info(resPicture.getOriginalFilename());
 
         String originalPicture = resPicture.getOriginalFilename();
-        String realImage = originalPicture.substring(originalPicture.lastIndexOf("\\")+1);
+        String realImage = originalPicture.substring(originalPicture.lastIndexOf("\\") + 1);
         String uuid = UUID.randomUUID().toString();
         String savePicture = uploadPath + File.separator + uuid + "_" + realImage;
         Path pathPicture = Paths.get(savePicture);
@@ -233,22 +227,48 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.OK).body(reservationService.findByResCode(id));
     }
 
+    @PostMapping("/restaurant/pick")
+    public ResponseEntity<Pick> update(@RequestBody Pick pick) {
+        try {
+            Pick isPicked = pickService.findByIdAndRestaurant(pick.getMember().getId(), pick.getRestaurant().getResCode());
+            if (isPicked == null) {
+                restaurantService.updatePicks(pick.getRestaurant().getResCode());
+                return ResponseEntity.status(HttpStatus.OK).body(pickService.create(pick));
+            } else return null;
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/restaurant/pick/{pickCode}")
+    public ResponseEntity<Pick> delete(@PathVariable int pickCode)
+    {
+        try
+        {
+            Pick pick = pickService.show(pickCode);
+            Pick target = pickService.findByIdAndRestaurant(pick.getMember().getId(), pick.getRestaurant().getResCode());
+            if (target != null)
+            {
+                restaurantService.deletePicks(pick.getRestaurant().getResCode());
+                return ResponseEntity.status(HttpStatus.OK).body(pickService.delete(pickCode));
+            }
+            else return null;
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
-    //식당 찜 추가 POST - http://localhost:8080/api/restaurant/pick
-    //중복 처리
-//    @PostMapping("/restaurant/pick")
-//    public ResponseEntity<RestaurantPick> createRestaurantPick(@RequestBody RestaurantPick restaurantPick) {
-//
-//        RestaurantPick target = commonLikeService.duplicatedLike(commonLike.getMember().getId(), commonLike.getCommunity().getCommonCode());
-//        if (target == null) {
-//            commonService.increaseCommonLikes(commonLike.getCommunity().getCommonCode());
-//            return ResponseEntity.status(HttpStatus.OK).body(commonLikeService.create(commonLike));
-//        } else {
-//
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//
-//    }
 
 }
+
+
+
+
+
+
+
+
+
