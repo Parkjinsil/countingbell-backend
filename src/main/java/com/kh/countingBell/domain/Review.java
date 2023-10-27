@@ -30,6 +30,9 @@ public class Review {
     @Column(name = "review_date")
     private Date reviewDate;
 
+    @Column(name = "review_photo")
+    private String reviewPhoto;
+
     @ManyToOne
     @JoinColumn(name = "id")
     private Member member;

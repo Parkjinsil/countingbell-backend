@@ -2,17 +2,12 @@ package com.kh.countingBell.service;
 
 
 import com.kh.countingBell.domain.Location;
-import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.LocationDAO;
-import com.kh.countingBell.repo.RestaurantDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -21,8 +16,7 @@ public class LocationService {
     @Autowired
     private LocationDAO locationDAO;
 
-    @Autowired
-    private RestaurantDAO restaurantDAO;
+
 
     public Page<Location> showAll(Pageable pageable) {
 
@@ -50,4 +44,6 @@ public class LocationService {
         locationDAO.delete(target);
         return target;
     }
+
+
 }

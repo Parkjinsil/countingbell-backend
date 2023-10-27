@@ -31,6 +31,8 @@ public class Menu {
     @Column(name="menu_picture")
     private String menuPicture;
 
+    @Column(name="menu_desc")
+    private String menuDesc;
 
     @ManyToOne
     @JoinColumn(name="res_code")

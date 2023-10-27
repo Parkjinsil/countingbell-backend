@@ -1,5 +1,6 @@
 package com.kh.countingBell.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @DynamicInsert
 @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Builder
 public class Restaurant {
 
     @Id
@@ -51,8 +53,9 @@ public class Restaurant {
 
 
 
+
     @ManyToOne
-    @JoinColumn(name="local_code")
+    @JoinColumn(name="local_code" )
     private Location location;
 
     @ManyToOne
@@ -62,6 +65,7 @@ public class Restaurant {
     @ManyToOne
     @JoinColumn(name="id")
     private Member member;
+
 
 
 

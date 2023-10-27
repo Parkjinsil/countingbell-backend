@@ -3,9 +3,12 @@ package com.kh.countingBell.service;
 import com.kh.countingBell.domain.Food;
 import com.kh.countingBell.domain.Location;
 import com.kh.countingBell.domain.Menu;
+import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +20,9 @@ public class FoodService {
     @Autowired
     private FoodDAO foodDAO;
 
-    public List<Food> showAll() {
-        return foodDAO.findAll();
+    // 음식 전체 조회
+    public Page<Food> showAll(Pageable pageable) {
+        return foodDAO.findAll(pageable);
     }
 
     public Food show(int id) {

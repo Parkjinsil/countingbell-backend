@@ -31,10 +31,12 @@ public class WebSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-//                .requestMatchers(new AntPathRequestMatcher("/api/user/**")).permitAll()
+//                .requestMatchers(new AntPathRequestMatcher("/api/user/**")).hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')
 //                .requestMatchers(new AntPathRequestMatcher("/api/public/**")).permitAll()
 //                .anyRequest().authenticated();
                 .anyRequest().permitAll();
+//          .anyRequest()
+
 
         // anyRequest.permitAll()
         // authenticated...

@@ -59,11 +59,19 @@ public class MemberService {
     }
 
     // 패스워드 찾기
-//    public String searchPwd(MemberDTO memberDTO)
-//    {
-//        return memberDAO.searchPwd(memberDTO.getName(), memberDTO.getPhone());
-//
-//    }
+    public String searchPwd(MemberDTO memberDTO) {
+        return memberDAO.searchPwd(memberDTO.getId(), memberDTO.getEmail());
+    }
+
+    public Member findUserById(String id) {
+        Member member = memberDAO.findById(id).orElse(null);
+        if (member != null) {
+            return member;
+        }
+        log.info("없는 계정이거나 유저 계정이 아닙니다.");
+        return null;
+    }
+
 
 }
 

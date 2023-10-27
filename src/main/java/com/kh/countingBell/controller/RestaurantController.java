@@ -52,8 +52,11 @@ public class RestaurantController {
     @Autowired
     private PickService pickService;
 
-    @Autowired
     private MenuService menuService;
+
+
+    @Autowired
+    private PickService pick;
 
     // 식당 1개에 따른 찜 조회
 //    @GetMapping("/restaurant/{id}/pick")
@@ -75,6 +78,24 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.OK).body(photo.findByResCode(id));
     }
 
+    // 음식종류에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/food
+    @GetMapping("/restaurant/{id}/food")
+    public ResponseEntity<List<Restaurant>> findResByFood(@PathVariable int id) {
+        log.info("LocationController 음식타입별 식당 찾기 실행");
+        List<Restaurant> resList = restaurantService.findResByFood(id);
+        log.info("restaurantList : " + resList);
+
+        return ResponseEntity.ok().body(resList);
+    }
+
+    // 종류 + 위치에 따른 식당 조회 : http://localhost:8080/api/restaurant/1/1
+    @GetMapping("/restaurant/{foodCode}/{localCode}")
+    public ResponseEntity<List<Restaurant>> findResByFilter(@PathVariable int foodCode,
+                                                            @PathVariable int localCode) {
+        List<Restaurant> resList = restaurantService.findResByFilter(foodCode, localCode);
+
+        return ResponseEntity.ok().body(resList);
+    }
 
     // 식당 1개의 메뉴 조회
     @GetMapping("/restaurant/{id}/menu")
@@ -83,47 +104,29 @@ public class RestaurantController {
     }
 
 
-    // 식당 전체 조회 : GET = http://localhost:8080/api/restaurant
-//    @GetMapping("/public/restaurant")
-//    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
-//
-//        // 정렬
-//        Sort sort = Sort.by("resCode").descending();
-//
-//        // 한 페이지에 10개씩
-//        Pageable pageable = PageRequest.of(page-1, 20, sort);
-//
-//        // 동적 쿼리를 위한 QueryDSL을 사용한 코드들 추가
-//        // 1. Q도메인 클래스 가져와야 함
-//        QRestaurant qRestaurant = QRestaurant.restaurant;
-//
-//        // 2. BooleanBuilder는 where문에 들어가는 조건들 넣어주는 컨테이너
-//        BooleanBuilder builder = new BooleanBuilder();
-//
-//        if(food!=null) {
-//            // 3. 원하는 조건은 필드값과 같이 결합해서 생성
-//            BooleanExpression foodExpression = qRestaurant.food.foodCode.eq(food);
-//
-//
-//            // 4. 만들어진 조건은 where문에 and나 or 같은 키워드와 결합한다.
-//            builder.and(foodExpression);
-//        }
-//        Page<Restaurant> result = restaurantService.showAll(pageable, builder);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
-//
-//    }
 
 
-    @GetMapping("/restaurant")
-    public ResponseEntity<List<Restaurant>> showAllRestaurant() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(restaurantService.showAll());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+
+    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
+    @GetMapping("/public/restaurant")
+    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
+
+
+        // 정렬
+        Sort sort = Sort.by("resCode").descending();
+
+        // 한 페이지에 10개
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
+
+        Page<Restaurant> result = restaurantService.showAll(pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+
+
     }
 
+
+// 식당 1개 보기
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
         try {
@@ -197,6 +200,8 @@ public class RestaurantController {
 
     }
 
+    
+    // 식당 수정하기
     @PutMapping("/restaurant")
     public ResponseEntity<Restaurant> updateRestaurant(@RequestBody Restaurant vo) {
         try {
@@ -206,6 +211,7 @@ public class RestaurantController {
         }
     }
 
+    // 식당 삭제
     @DeleteMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> deleteRestaurant(@PathVariable int id) {
         try {
@@ -213,11 +219,6 @@ public class RestaurantController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-    }
-
-    @GetMapping("/restaurant/{id}/location")
-    public ResponseEntity<List<Restaurant>> findByResCode(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.findByLocalCode(id));
     }
 
     //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation

@@ -24,6 +24,8 @@ public class QMenu extends EntityPathBase<Menu> {
 
     public final NumberPath<Integer> menuCode = createNumber("menuCode", Integer.class);
 
+    public final StringPath menuDesc = createString("menuDesc");
+
     public final StringPath menuName = createString("menuName");
 
     public final StringPath menuPicture = createString("menuPicture");
