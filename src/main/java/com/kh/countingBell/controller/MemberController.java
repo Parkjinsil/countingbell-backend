@@ -69,7 +69,7 @@ public class MemberController {
     }
 
 
-    // 멤버 1명 조회
+    // 회원 1명 상세 조회
     @GetMapping("/user/{id}")
     public ResponseEntity<Member> show(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
@@ -79,31 +79,33 @@ public class MemberController {
     // 회원 수정
     @PutMapping("/update")
     public ResponseEntity updateMember(@RequestBody MemberDTO memberDTO) {
-        String id = memberDTO.getId();
+        String id = tokenProvider.validateAndGetUserId(memberDTO.getToken());
+        Member target = memberService.show(id);
+        String password = target.getPassword();
 
-        // 기존 회원 정보 가져오기
-        Member existingMember = memberService.findUserById(id);
+        log.info("기존 password : " + password);
 
-        if (existingMember != null) {
+        if (target != null) {
             // 업데이트할 정보가 존재하는 경우에만 업데이트
             if (!memberDTO.getPassword().isEmpty()) {
-                existingMember.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+                target.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+                log.info("변경된 password : " + target.getPassword());
             }
             if (memberDTO.getName() != null) {
-                existingMember.setName(memberDTO.getName());
+                target.setName(memberDTO.getName());
             }
             if (memberDTO.getNickname() != null) {
-                existingMember.setNickname(memberDTO.getNickname());
+                target.setNickname(memberDTO.getNickname());
             }
             if (memberDTO.getPhone() != null) {
-                existingMember.setPhone(memberDTO.getPhone());
+                target.setPhone(memberDTO.getPhone());
             }
             if (memberDTO.getEmail() != null) {
-                existingMember.setEmail(memberDTO.getEmail());
+                target.setEmail(memberDTO.getEmail());
             }
 
             // 회원 정보 업데이트
-            Member updatedMember = memberService.update(existingMember);
+            Member updatedMember = memberService.update(target);
 
             // 응답용 DTO 생성
             MemberDTO responseDTO = memberDTO.builder()
@@ -111,8 +113,6 @@ public class MemberController {
                     .name(updatedMember.getName())
                     .phone(updatedMember.getPhone())
                     .nickname(updatedMember.getNickname())
-                    .gender(updatedMember.getGender())
-                    .age(updatedMember.getAge())
                     .email(updatedMember.getEmail())
                     .role(updatedMember.getRole())
                     .build();
@@ -126,15 +126,17 @@ public class MemberController {
 
 
 
-    // 회원 삭제
-    @DeleteMapping("/userInfo/{id}")
+    // 회원 삭제 : http://localhost:8080/api/user/{id}
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Member> deleteUser(@PathVariable String id) {
         try {
+            log.info("삭제 되냐?" + id);
             return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 
     //  회원가입
     @PostMapping("/user/signup")
