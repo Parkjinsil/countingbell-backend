@@ -85,7 +85,6 @@ public class MemberService {
         return memberDAO.findByNickname(nickname).isPresent();
     }
 
-
 }
 
 

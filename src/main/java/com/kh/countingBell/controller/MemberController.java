@@ -240,7 +240,8 @@ public class MemberController {
 
     // 닉네임 중복 확인
     @PostMapping("/checkNickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody String nickname) {
+    public ResponseEntity<Boolean> checkNickname(@RequestBody Map<String, String> requestBody) {
+        String nickname = requestBody.get("nickname");
         boolean isAvailable = !memberService.isNicknameExists(nickname);
         return ResponseEntity.ok(isAvailable);
     }
