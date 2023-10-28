@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberDAO extends JpaRepository<Member, String>, QuerydslPredicateExecutor<Member> {
@@ -22,6 +23,9 @@ public interface MemberDAO extends JpaRepository<Member, String>, QuerydslPredic
 
     @Query(value = "SELECT password FROM member WHERE id=:id AND email=:email", nativeQuery = true)
     String searchPwd(@Param("id")String id, @Param("email")String email);
+
+    Optional<Member> findByNickname(String nickname);
+    Optional<Member> findById(String id);
 
 
 }

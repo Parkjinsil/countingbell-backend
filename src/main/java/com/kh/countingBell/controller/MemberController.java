@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -230,7 +231,19 @@ public class MemberController {
     }
 
 
+    // 아이디 중복체크
+    @GetMapping("/checkId/{id}")
+    public ResponseEntity checkIfIdIsAvailable(@PathVariable String id) {
+        boolean isAvailable = memberService.isIdExists(id);
+        return ResponseEntity.ok().body(Map.of("available", isAvailable));
+    }
 
+    // 닉네임 중복 확인
+    @PostMapping("/checkNickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody String nickname) {
+        boolean isAvailable = !memberService.isNicknameExists(nickname);
+        return ResponseEntity.ok(isAvailable);
+    }
 
 
 }
