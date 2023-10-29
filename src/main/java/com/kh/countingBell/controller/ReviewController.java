@@ -5,6 +5,8 @@ import com.kh.countingBell.service.MemberService;
 import com.kh.countingBell.service.ResCommentService;
 import com.kh.countingBell.service.RestaurantService;
 import com.kh.countingBell.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/*")
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class ReviewController {
@@ -95,6 +98,7 @@ public class ReviewController {
         }
 
         Review vo = new Review();
+        vo.setReviewPhoto(uuid + "_" + realImage);
         vo.setReviewContent(reviewContent);
         vo.setReviewGrade(reviewGrade);
 

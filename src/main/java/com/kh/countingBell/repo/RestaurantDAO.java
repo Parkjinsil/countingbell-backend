@@ -29,6 +29,4 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer>, Query
 
 
 
-
-
 }

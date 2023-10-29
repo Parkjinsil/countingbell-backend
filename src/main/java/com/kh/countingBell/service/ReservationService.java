@@ -23,8 +23,8 @@ public class ReservationService {
         return dao.findById(id).orElse(null);
     }
 
-    public Reservation create(Reservation vo) {
-        return dao.save(vo);
+    public Reservation create(Reservation reser) {
+        return dao.save(reser);
     }
 
     public Reservation update(Reservation vo) {
@@ -46,7 +46,7 @@ public class ReservationService {
         return dao.findByResCode(code);
     }
 
-    public List<Reservation> findById(String user){
-        log.info("user : " + user);
-        return dao.findById(user); }
+    // 사용자 id에 따른 예약 조회
+    public List<Reservation> findReserById(String id){
+        return dao.findReserById(id); }
 }
