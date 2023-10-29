@@ -2,11 +2,13 @@ package com.kh.countingBell.repo;
 
 
 import com.kh.countingBell.domain.Restaurant;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 @Repository
@@ -29,7 +31,14 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer>, Query
 
     // 아이디별 식당조회
     @Query(value = "SELECT * FROM restaurant WHERE id = :id", nativeQuery = true)
-    public List<Restaurant> getResByUserId(@Param("id") String id);
+    List<Restaurant> getResByUserId(@Param("id") String id);
+
+    // 식당명으로 식당검색
+    @Query(value = "SELECT * FROM restaurant WHERE res_Name LIKE %:keyword%", nativeQuery = true)
+    List<Restaurant> searchResByName(@Param("keyword") String keyword);
+    
+
+
 
 
 

@@ -121,14 +121,13 @@ public class RestaurantController {
             Sort sort = Sort.by("resCode").descending();
 
             // 한 페이지에 10개
-            Pageable pageable = PageRequest.of(page - 1, 10, sort);
+            Pageable pageable = PageRequest.of(page - 1, 100, sort);
 
             Page<Restaurant> result = restaurantService.showAll(pageable);
             return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
 
 
         }
-
 
     // 식당 1개 보기
         @GetMapping("/restaurant/{id}")
@@ -238,6 +237,18 @@ public class RestaurantController {
             log.info("id : " + id);
             return ResponseEntity.status(HttpStatus.OK).body(reservationService.findByResCode(id));
         }
+
+
+
+
+    // 식당명으로 식당 검색하기
+    @GetMapping("/restaurant/search/{keyword}")
+    public List<Restaurant> searchResByName(@PathVariable String keyword) {
+        log.info("keyword : " + keyword);
+        return restaurantService.searchResByName(keyword);
+
+    }
+
 
 
 

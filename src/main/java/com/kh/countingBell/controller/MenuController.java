@@ -51,6 +51,13 @@ public class MenuController {
 
     }
 
+    // 음식명으로 식당 검색하기
+    @GetMapping("/search/{keyword}")
+    public List<Menu> searchResByMenuName(@PathVariable String keyword) {
+        log.info("keyword : " + keyword);
+        return menuService.searchResByMenuName(keyword);
+    }
+
 
 
     // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
