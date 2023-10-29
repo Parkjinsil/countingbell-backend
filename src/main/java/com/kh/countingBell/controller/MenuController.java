@@ -40,7 +40,7 @@ public class MenuController {
 
 
 
-    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/1/restaurant
+    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/{resCode}/restaurant
     @GetMapping("/menu/{id}/restaurant")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
         log.info("menuController 식당별 메뉴 찾기 실행");

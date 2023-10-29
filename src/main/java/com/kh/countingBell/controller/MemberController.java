@@ -181,7 +181,11 @@ public class MemberController {
             log.info("여기 들어오는가?");
             String token = tokenProvider.create(member);
             log.info("token :: ==>>>>> " + token);
-            MemberDTO responseDTO = MemberDTO.builder().id(member.getId()).name(member.getName()).token(token).build();
+            MemberDTO responseDTO = MemberDTO.builder()
+                    .id(member.getId())
+                    .name(member.getName())
+                    .role(member.getRole())
+                    .token(token).build();
 
             return ResponseEntity.ok().body(responseDTO);
         } else {
