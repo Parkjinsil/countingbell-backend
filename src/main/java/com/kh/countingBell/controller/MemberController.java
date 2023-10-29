@@ -235,6 +235,7 @@ public class MemberController {
     @GetMapping("/checkId/{id}")
     public ResponseEntity checkIfIdIsAvailable(@PathVariable String id) {
         boolean isAvailable = memberService.isIdExists(id);
+        log.info(id);
         return ResponseEntity.ok().body(Map.of("available", isAvailable));
     }
 

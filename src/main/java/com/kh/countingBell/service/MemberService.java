@@ -78,11 +78,13 @@ public class MemberService {
     public boolean isIdExists(String id) {
         Member member = memberDAO.findById(id).orElse(null);
         return member != null;
+        // true : 중복된 아이디
     }
 
     // 닉네임 중복체크
     public boolean isNicknameExists(String nickname) {
         return memberDAO.findByNickname(nickname).isPresent();
+        // false : 중복된 닉네임
     }
 
 }
