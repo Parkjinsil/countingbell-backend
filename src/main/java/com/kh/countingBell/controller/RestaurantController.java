@@ -130,7 +130,7 @@ public class RestaurantController {
         }
 
 
-// 식당 1개 보기
+    // 식당 1개 보기
         @GetMapping("/restaurant/{id}")
         public ResponseEntity<Restaurant> showRestaurant ( @PathVariable int id){
             try {
@@ -139,6 +139,12 @@ public class RestaurantController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
         }
+
+    // 아이디별 식당 전체 보기
+    @GetMapping("/restaurant/{id}/user")
+    public List<Restaurant> getRestaurantsByUserId(@PathVariable String id) {
+        return restaurantService.getResByUserId(id);
+    }
 
     @PostMapping("/restaurant")
     public ResponseEntity<Restaurant> createRestaurant(@RequestParam(value="resName", required = true)String resName,

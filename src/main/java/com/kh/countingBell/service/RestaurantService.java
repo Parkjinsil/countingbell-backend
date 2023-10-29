@@ -33,6 +33,11 @@ public class RestaurantService {
     private LocationDAO locationDAO;
 
 
+    // 아이디별 식당 전체조회
+    public List<Restaurant> getResByUserId(String userId) {
+        return restaurantDAO.getResByUserId(userId);
+    }
+
 
     // 식당 전체 조회
     public Page<Restaurant> showAll(Pageable pageable) {
