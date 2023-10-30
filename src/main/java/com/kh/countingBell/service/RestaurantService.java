@@ -5,6 +5,7 @@ import com.kh.countingBell.repo.FoodDAO;
 import com.kh.countingBell.repo.LocationDAO;
 import com.kh.countingBell.repo.MenuDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
+import com.querydsl.core.BooleanBuilder;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -40,9 +41,15 @@ public class RestaurantService {
 
 
     // 식당 전체 조회
-    public Page<Restaurant> showAll(Pageable pageable) {
-        return restaurantDAO.findAll(pageable);
+//    public Page<Restaurant> showAll(Pageable pageable) {
+//        return restaurantDAO.findAll(pageable);
+//    }
+
+    public Page<Restaurant> showAll(Pageable pageable, BooleanBuilder builder){
+        return restaurantDAO.findAll(builder, pageable);
     }
+
+
 
     // 식당 상세 조회
     public Restaurant show(int id) {

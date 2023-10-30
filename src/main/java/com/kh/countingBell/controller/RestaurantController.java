@@ -114,16 +114,43 @@ public class RestaurantController {
         @GetMapping("/public/restaurant")
         public ResponseEntity<List<Restaurant>> restaurantList (
         @RequestParam(name = "page", defaultValue = "1") int page,
-        @RequestParam(name = "food", required = false) Integer food) {
+        @RequestParam(name = "restaurant", required = false) Integer restaurant
+        ) {
 
 
             // 정렬
             Sort sort = Sort.by("resCode").descending();
 
             // 한 페이지에 10개
-            Pageable pageable = PageRequest.of(page - 1, 100, sort);
+            Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
-            Page<Restaurant> result = restaurantService.showAll(pageable);
+            // 동적 쿼리를 위한 QuerlDSL을 사용한 코드들 추가
+
+            // 1. Q도메인 클래스를 가져와야 한다.
+            QRestaurant qRestaurant = QRestaurant.restaurant;
+
+            // 2. BooleanBuilder는 where문에 들어가는 조건들을 넣어주는 컨테이너
+            BooleanBuilder builder = new BooleanBuilder();
+
+            if (restaurant != null) {
+                BooleanExpression expression = qRestaurant.resCode.eq(restaurant);
+                builder.and(expression);
+            }
+
+            Page<Restaurant> result = restaurantService.showAll(pageable, builder);
+            int totalItems = (int) result.getTotalElements(); // 전체 아이템 수
+            int itemsPerPage = 10; // 한 페이지당 표시될 아이템 수
+            int maxPages = (int) Math.ceil((double) totalItems / itemsPerPage); // 전체 페이지 수
+
+
+            log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
+            log.info("Total Count : " + result.getTotalElements()); // 전체 개수
+            log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
+            log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
+            log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
+            log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
+
+
             return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
 
 
@@ -145,6 +172,8 @@ public class RestaurantController {
         return restaurantService.getResByUserId(id);
     }
 
+
+    // 식당 추가
     @PostMapping("/restaurant")
     public ResponseEntity<Restaurant> createRestaurant(@RequestParam(value="resName", required = true)String resName,
                                                        @RequestParam(value="resAddr", required = true)String resAddr,
