@@ -184,6 +184,9 @@ public class MemberController {
             MemberDTO responseDTO = MemberDTO.builder()
                     .id(member.getId())
                     .name(member.getName())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
                     .role(member.getRole())
                     .token(token).build();
 

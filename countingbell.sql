@@ -199,3 +199,5 @@ SELECT DISTINCT R.RES_CODE, R.RES_NAME
 FROM RESTAURANT R
 JOIN MENU M ON R.RES_CODE = M.RES_CODE
 WHERE M.MENU_NAME LIKE '%곱창%';
+
+select * from menu where menu_Name Like '%곱창%';
