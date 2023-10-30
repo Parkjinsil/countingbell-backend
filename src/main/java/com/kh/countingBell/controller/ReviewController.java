@@ -46,13 +46,6 @@ public class ReviewController {
     @Autowired
     private ResCommentService resComment;
 
-    // 식당별 리뷰 찾기 : http://localhost:8080/api/review/1/restaurant
-    @GetMapping("/review/{resCode}/restaurant")
-    public ResponseEntity<List<Review>> resReviewList(@PathVariable int resCode) {
-        List<Review> reviewList = reviewService.findByResCode(resCode);
-        return ResponseEntity.ok().body(reviewList);
-    }
-
     // 리뷰 1개에 따른 댓글 조회
     @GetMapping("/review/{id}/comment")
     public ResponseEntity<List<ResComment>> resCommentList(@PathVariable int id) {

@@ -36,6 +36,8 @@ public class MemberController {
     @Autowired
     private ReservationService reservation;
 
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private EmailService emailService;
@@ -48,10 +50,11 @@ public class MemberController {
 
 
 
-    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
-    @GetMapping("/member/{user}/review")
-    public ResponseEntity<List<Review>> reviewById(@PathVariable String user) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
+    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/user/1/review
+    @GetMapping("/user/{id}/review")
+    public ResponseEntity<List<Review>> reviewById(@PathVariable String id) {
+        List<Review> reviewList = reviewService.findReviewById(id);
+        return ResponseEntity.ok().body(reviewList);
     }
 
 
