@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 한 번�
     private String parseBearerToken(HttpServletRequest request) {
         // Http 요청의 헤더를 파싱해 Bearer 토큰을 리턴한다.
         String bearerToken = request.getHeader("Authorization");
-        log.info("bearerToken : " + bearerToken);
+//        log.info("bearerToken : " + bearerToken);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7); // 7부터 가지고 오겠다
         }

@@ -209,7 +209,7 @@ public class MemberController {
         return ResponseEntity.ok().body(userId);
     }
 
-    // 패스워드 찾기 :: 수정해야 함!!!!!!!!///////////////////////
+    // 패스워드 찾기
     @PostMapping("/searchPwd")
     public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
         String userPwd = memberService.searchPwd(memberDTO);
