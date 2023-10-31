@@ -5,14 +5,15 @@ import com.kh.countingBell.repo.FoodDAO;
 import com.kh.countingBell.repo.LocationDAO;
 import com.kh.countingBell.repo.MenuDAO;
 import com.kh.countingBell.repo.RestaurantDAO;
+import com.querydsl.core.BooleanBuilder;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+
 
 import java.util.List;
 
@@ -33,17 +34,38 @@ public class RestaurantService {
     private LocationDAO locationDAO;
 
 
+    // 아이디별 식당 전체조회
+    public List<Restaurant> getResByUserId(String userId) {
+        return restaurantDAO.getResByUserId(userId);
+    }
+
 
     // 식당 전체 조회
-    public Page<Restaurant> showAll(Pageable pageable) {
-        return restaurantDAO.findAll(pageable);
+//    public Page<Restaurant> showAll(Pageable pageable) {
+//        return restaurantDAO.findAll(pageable);
+//    }
+
+    public Page<Restaurant> showAll(Pageable pageable, BooleanBuilder builder){
+        return restaurantDAO.findAll(builder, pageable);
     }
+
+
 
     // 식당 상세 조회
     public Restaurant show(int id) {
         return restaurantDAO.findById(id).orElse(null);
 
     }
+
+    // 식당명으로 식당 검색
+    public List<Restaurant> searchResByName(String keyword) {
+      return restaurantDAO.searchResByName(keyword);
+
+    }
+
+
+
+
 
     // 식당 추가
     public Restaurant create(Restaurant restaurant) {

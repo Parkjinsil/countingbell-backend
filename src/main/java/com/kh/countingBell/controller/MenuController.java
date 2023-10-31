@@ -40,7 +40,7 @@ public class MenuController {
 
 
 
-    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/1/restaurant
+    // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/{resCode}/restaurant
     @GetMapping("/menu/{id}/restaurant")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
         log.info("menuController 식당별 메뉴 찾기 실행");
@@ -49,6 +49,13 @@ public class MenuController {
 
         return ResponseEntity.ok().body(menuList);
 
+    }
+
+    // 음식명으로 식당 검색하기
+    @GetMapping("/search/{keyword}")
+    public List<Menu> searchResByMenuName(@PathVariable String keyword) {
+        log.info("keyword : " + keyword);
+        return menuService.searchResByMenuName(keyword);
     }
 
 

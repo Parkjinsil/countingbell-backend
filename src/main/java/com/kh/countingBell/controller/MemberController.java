@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -66,7 +67,6 @@ public class MemberController {
     }
 
 
-
     // 멤버전체 보기
     @GetMapping("/user")
     public ResponseEntity<List<Member>> showAll() {
@@ -74,40 +74,73 @@ public class MemberController {
     }
 
 
-
-    // 멤버 1명 조회
+    // 회원 1명 상세 조회
     @GetMapping("/user/{id}")
     public ResponseEntity<Member> show(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(memberService.show(id));
     }
 
 
-
     // 회원 수정
-    @PutMapping("/user/update")
-    public ResponseEntity<Member> updateUser(@RequestBody Member member) {
-        try {
-            Member updateUser = memberService.show(member.getId());
-            // 새로운 사용자 정보로 업데이트
-            updateUser.setName(member.getName());
-            updateUser.setNickname(member.getNickname());
-            updateUser.setPassword(member.getPassword());
-            updateUser.setAge(member.getAge());
-            updateUser.setGender(member.getGender());
-            updateUser.setPhone(member.getPhone());
-            updateUser.setEmail(member.getEmail());
+    @PutMapping("/update")
+    public ResponseEntity updateMember(@RequestBody MemberDTO memberDTO) {
+        String id = tokenProvider.validateAndGetUserId(memberDTO.getToken());
+        Member target = memberService.show(id);
+        String password = target.getPassword();
 
-            Member updatedUser = memberService.update(updateUser);
+        log.info("기존 password : " + password);
 
-            return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (target != null) {
+            // 업데이트할 정보가 존재하는 경우에만 업데이트
+            if (!memberDTO.getPassword().isEmpty()) {
+                target.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+                log.info("변경된 password : " + target.getPassword());
+            }
+            if (memberDTO.getName() != null) {
+                target.setName(memberDTO.getName());
+            }
+            if (memberDTO.getNickname() != null) {
+                target.setNickname(memberDTO.getNickname());
+            }
+            if (memberDTO.getPhone() != null) {
+                target.setPhone(memberDTO.getPhone());
+            }
+            if (memberDTO.getEmail() != null) {
+                target.setEmail(memberDTO.getEmail());
+            }
+
+            // 회원 정보 업데이트
+            Member updatedMember = memberService.update(target);
+
+            // 응답용 DTO 생성
+            MemberDTO responseDTO = memberDTO.builder()
+                    .id(updatedMember.getId())
+                    .name(updatedMember.getName())
+                    .phone(updatedMember.getPhone())
+                    .nickname(updatedMember.getNickname())
+                    .email(updatedMember.getEmail())
+                    .role(updatedMember.getRole())
+                    .build();
+
+            return ResponseEntity.ok().body(responseDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 ID의 사용자가 없습니다.");
         }
     }
 
 
 
-    // 회원 삭제
+
+    // 회원 삭제 : http://localhost:8080/api/user/{id}
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Member> deleteUser(@PathVariable String id) {
+        try {
+            log.info("삭제 되냐?" + id);
+            return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
     //  회원가입
@@ -152,7 +185,14 @@ public class MemberController {
             log.info("여기 들어오는가?");
             String token = tokenProvider.create(member);
             log.info("token :: ==>>>>> " + token);
-            MemberDTO responseDTO = MemberDTO.builder().id(member.getId()).name(member.getName()).token(token).build();
+            MemberDTO responseDTO = MemberDTO.builder()
+                    .id(member.getId())
+                    .name(member.getName())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .role(member.getRole())
+                    .token(token).build();
 
             return ResponseEntity.ok().body(responseDTO);
         } else {
@@ -173,7 +213,7 @@ public class MemberController {
         return ResponseEntity.ok().body(userId);
     }
 
-    // 패스워드 찾기 :: 수정해야 함!!!!!!!!///////////////////////
+    // 패스워드 찾기
     @PostMapping("/searchPwd")
     public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
         String userPwd = memberService.searchPwd(memberDTO);
@@ -202,7 +242,21 @@ public class MemberController {
     }
 
 
+    // 아이디 중복체크
+    @GetMapping("/checkId/{id}")
+    public ResponseEntity checkIfIdIsAvailable(@PathVariable String id) {
+        boolean isAvailable = memberService.isIdExists(id);
+        log.info(id);
+        return ResponseEntity.ok().body(Map.of("available", isAvailable));
+    }
 
+    // 닉네임 중복 확인
+    @PostMapping("/checkNickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody Map<String, String> requestBody) {
+        String nickname = requestBody.get("nickname");
+        boolean isAvailable = !memberService.isNicknameExists(nickname);
+        return ResponseEntity.ok(isAvailable);
+    }
 
 
 }

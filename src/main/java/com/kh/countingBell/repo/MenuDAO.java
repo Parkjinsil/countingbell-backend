@@ -15,4 +15,9 @@ public interface MenuDAO extends JpaRepository<Menu, Integer>, QuerydslPredicate
     // 식당별 메뉴 조회
     @Query(value = "SELECT * FROM menu WHERE res_code = :resCode", nativeQuery = true)
     List<Menu> findByResCode(@Param("resCode") int resCode);
+
+    // 음식명에 따른 검색 쿼리를 작성
+    @Query(value = "SELECT * FROM menu WHERE menu_name LIKE %:keyword%", nativeQuery = true)
+    List<Menu> searchResByMenuName(@Param("keyword") String keyword);
+
 }

@@ -61,7 +61,7 @@ public class Restaurant {
 
     @ManyToOne
     @JoinColumn(name="id")
-    private Member member;
+    private Member member = new Member();
 
 
 

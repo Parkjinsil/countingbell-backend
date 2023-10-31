@@ -57,6 +57,11 @@ public class MenuService {
     }
 
 
+    // 음식명으로 검색
+    public List<Menu> searchResByMenuName(String keyword) {
+
+        return menuDAO.searchResByMenuName(keyword);
+    }
 
 
 }
