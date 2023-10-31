@@ -13,10 +13,10 @@ public interface ReviewDAO extends JpaRepository<Review,Integer> {
 
     //식당 1개에 따른 리뷰
     @Query(value = "SELECT * FROM review WHERE res_code = :resCode", nativeQuery = true)
-    List<Review> findByResCode(@Param("resCode") int resCode);
+    List<Review> findReviewByResCode(@Param("resCode") int resCode);
 
     //사용자 id에 따른 리뷰
-    @Query(value = "SELECT * FROM review WHERE id = :user", nativeQuery = true)
-    List<Review> findById(@Param("user")String user);
+    @Query(value = "SELECT * FROM review WHERE id = :id", nativeQuery = true)
+    List<Review> findReviewById(@Param("id") String id);
 
 }

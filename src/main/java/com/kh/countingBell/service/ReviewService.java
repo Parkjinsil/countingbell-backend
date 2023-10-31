@@ -49,8 +49,10 @@ public class ReviewService {
         return target;
     }
 
-    public List<Review> findByResCode(int resCode) { return reviewDAO.findByResCode(resCode); }
+    // 식당별 리뷰
+    public List<Review> findReviewByResCode(int resCode) { return reviewDAO.findReviewByResCode(resCode); }
 
-    public List<Review> findById(String user){ return reviewDAO.findById(user); }
+    // id별 리뷰
+    public List<Review> findReviewById(String id){ return reviewDAO.findReviewById(id); }
 
 }

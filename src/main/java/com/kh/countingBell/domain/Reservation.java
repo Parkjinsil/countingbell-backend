@@ -29,7 +29,7 @@ public class Reservation {
     private Date reserDate;
 
     @Column(name="reser_time")
-    private Time reserTime;
+    private Date reserTime;
 
     @ManyToOne
     @JoinColumn(name = "id")

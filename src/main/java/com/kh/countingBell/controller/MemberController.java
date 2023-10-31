@@ -37,6 +37,8 @@ public class MemberController {
     @Autowired
     private ReservationService reservation;
 
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private EmailService emailService;
@@ -48,18 +50,20 @@ public class MemberController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/member/1/review
-    @GetMapping("/member/{user}/review")
-    public ResponseEntity<List<Review>> reviewById(@PathVariable String user) {
-        return ResponseEntity.status(HttpStatus.OK).body(review.findById(user));
+
+    //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/user/1/review
+    @GetMapping("/user/{id}/review")
+    public ResponseEntity<List<Review>> reviewById(@PathVariable String id) {
+        List<Review> reviewList = reviewService.findReviewById(id);
+        return ResponseEntity.ok().body(reviewList);
     }
 
 
-    //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/member/1/reservation
-    @GetMapping("/member/{user}/reservation")
-    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String user) {
-        log.info("user : " + user);
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.findById(user));
+    //사용자 id에 따른 예약 조회 : GET - http://localhost:8080/api/user/1/reservation
+    @GetMapping("/user/{id}/reservation")
+    public ResponseEntity<List<Reservation>> memberReservationList(@PathVariable String id) {
+        List<Reservation> reservationList = reservation.findReserById(id);
+        return ResponseEntity.ok().body(reservationList);
     }
 
 
@@ -209,7 +213,7 @@ public class MemberController {
         return ResponseEntity.ok().body(userId);
     }
 
-    // 패스워드 찾기 :: 수정해야 함!!!!!!!!///////////////////////
+    // 패스워드 찾기
     @PostMapping("/searchPwd")
     public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
         String userPwd = memberService.searchPwd(memberDTO);

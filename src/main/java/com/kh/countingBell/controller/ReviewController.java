@@ -5,6 +5,8 @@ import com.kh.countingBell.service.MemberService;
 import com.kh.countingBell.service.ResCommentService;
 import com.kh.countingBell.service.RestaurantService;
 import com.kh.countingBell.service.ReviewService;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/*")
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class ReviewController {
@@ -42,13 +45,6 @@ public class ReviewController {
 
     @Autowired
     private ResCommentService resComment;
-
-    // 식당별 리뷰 찾기 : http://localhost:8080/api/review/1/restaurant
-    @GetMapping("/review/{resCode}/restaurant")
-    public ResponseEntity<List<Review>> resReviewList(@PathVariable int resCode) {
-        List<Review> reviewList = reviewService.findByResCode(resCode);
-        return ResponseEntity.ok().body(reviewList);
-    }
 
     // 리뷰 1개에 따른 댓글 조회
     @GetMapping("/review/{id}/comment")
@@ -95,6 +91,7 @@ public class ReviewController {
         }
 
         Review vo = new Review();
+        vo.setReviewPhoto(uuid + "_" + realImage);
         vo.setReviewContent(reviewContent);
         vo.setReviewGrade(reviewGrade);
 

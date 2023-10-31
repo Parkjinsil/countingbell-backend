@@ -24,7 +24,7 @@ import java.util.UUID;
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class PhotoController {
 
-    @Value("${countingbell.upload.path")
+    @Value("${countingbell.upload.path}")
     private String uploadPath;
 
     @Autowired
@@ -41,8 +41,8 @@ public class PhotoController {
     }
 
     @PostMapping("/photo")
-    public ResponseEntity<Photo> createPhoto(@RequestParam(value = "resCode", required = true) Integer resCode,
-                                             @RequestParam(value = "photoName", required = true) String photoName,
+    public ResponseEntity<Photo> createPhoto(Integer resCode,
+                                             String photoName,
                                              @RequestPart(value = "resPhoto", required = true) MultipartFile resPhoto){
 
         String originalPhoto = resPhoto.getOriginalFilename();
@@ -64,6 +64,11 @@ public class PhotoController {
         Restaurant restaurant = new Restaurant();
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
+
+       log.info("resPhoto : " + resPhoto);
+        log.info("photoName : " + photoName);
+
+        log.info("resCode : " + resCode);
 
         return ResponseEntity.status(HttpStatus.OK).body(photoService.create(vo));
     }
