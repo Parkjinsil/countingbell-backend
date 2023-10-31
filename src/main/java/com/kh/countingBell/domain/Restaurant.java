@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicInsert
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Builder
 public class Restaurant {
@@ -48,7 +49,9 @@ public class Restaurant {
     private String resPicture;
 
     @Column(name="res_picks")
-    private Integer resPicks;
+    private int resPicks;
+
+
 
 
     @ManyToOne

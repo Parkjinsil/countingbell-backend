@@ -1,5 +1,10 @@
 package com.kh.countingBell.service;
 
+import com.kh.countingBell.domain.Food;
+import com.kh.countingBell.domain.Location;
+import com.kh.countingBell.domain.Menu;
+import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.repo.*;
 import com.kh.countingBell.domain.*;
 import com.kh.countingBell.repo.FoodDAO;
 import com.kh.countingBell.repo.LocationDAO;
@@ -23,6 +28,9 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantDAO restaurantDAO;
+
+    @Autowired
+    private MemberDAO memberDAO;
 
     @Autowired
     private FoodDAO foodDAO;
@@ -97,6 +105,15 @@ public class RestaurantService {
         return restaurantDAO.findResByFood(id);
     }
 
+    public Restaurant updatePicks(int id){
+        restaurantDAO.updatePicks(id);
+        return restaurantDAO.findById(id).orElse(null);
+    }
+
+    public Restaurant deletePicks(int id){
+        restaurantDAO.deletePicks(id);
+        return restaurantDAO.findById(id).orElse(null);
+    }
 
 
     // 지역에 따른 식당 조회
