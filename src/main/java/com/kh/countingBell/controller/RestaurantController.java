@@ -13,6 +13,10 @@ import com.kh.countingBell.service.RestaurantService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,10 +63,10 @@ public class RestaurantController {
     private PickService pick;
 
     // 식당 1개에 따른 찜 조회
-//    @GetMapping("/restaurant/{id}/pick")
-//    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
-//        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
-//    }
+    @GetMapping("/restaurant/{id}/pick")
+    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
+    }
 
     // 식당 1개에 따른 할인 조회
     // http://localhost:8080/restaurant/1/discount
@@ -228,6 +232,7 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.OK).body(reservationService.findByResCode(id));
     }
 
+   //  식당 찜 & 찜 수 처리
     @PostMapping("/restaurant/pick")
     public ResponseEntity<Pick> update(@RequestBody Pick pick) {
         try {
@@ -241,6 +246,9 @@ public class RestaurantController {
         }
     }
 
+
+
+    // 식당 찜 취소 & 찜 수 처리
     @DeleteMapping("/restaurant/pick/{pickCode}")
     public ResponseEntity<Pick> delete(@PathVariable int pickCode)
     {
@@ -265,7 +273,21 @@ public class RestaurantController {
 
 }
 
-
+//    @PostMapping(value = "/restaurant/pick", consumes = "application/json")
+//    public ResponseEntity<Pick> update(@RequestBody Pick pick) {
+//        try {
+//            Pick isPicked = pickService.findByIdAndRestaurant(pick.getMember().getId(), pick.getRestaurant().getResCode());
+//            if (isPicked == null) {
+//                restaurantService.updatePicks(pick.getRestaurant().getResCode());
+//                return ResponseEntity.status(HttpStatus.OK).body(pickService.create(pick));
+//            } else {
+//                // 어떻게 처리할지에 대한 로직을 추가하십시오
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
 
 

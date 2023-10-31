@@ -18,7 +18,6 @@ import java.util.List;
 @DynamicInsert
 @Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Builder
 public class Restaurant {
 
     @Id

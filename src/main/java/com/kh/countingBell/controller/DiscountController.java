@@ -1,6 +1,7 @@
 package com.kh.countingBell.controller;
 
 import com.kh.countingBell.domain.Discount;
+import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.DiscountService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +24,16 @@ import java.util.List;
 public class DiscountController {
 
     @Autowired
-    private DiscountService discount;
+    private DiscountService discountService;
 
     @GetMapping("/public/discount")
     public ResponseEntity<List<Discount>> showDiscountList() {
-        return ResponseEntity.status(HttpStatus.OK).body(discount.showAll());
+        return ResponseEntity.status(HttpStatus.OK).body(discountService.showAll());
     }
 
     @GetMapping("/discount/{id}")
     public ResponseEntity<Discount> showDiscount(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(discount.show(id));
+        return ResponseEntity.status(HttpStatus.OK).body(discountService.show(id));
     }
 
 //    @PostMapping("/discount")
@@ -57,7 +58,7 @@ public class DiscountController {
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
 
-        return ResponseEntity.status(HttpStatus.OK).body(discount.create(vo));
+        return ResponseEntity.status(HttpStatus.OK).body(discountService.create(vo));
     }
 
 
@@ -69,7 +70,7 @@ public class DiscountController {
 
         log.info("vo:"+vo);
 
-       Discount result = discount.update(vo);
+       Discount result = discountService.update(vo);
        if(result!=null) {
            return ResponseEntity.status(HttpStatus.OK).body(result);
        }
@@ -79,7 +80,18 @@ public class DiscountController {
 
     @DeleteMapping("/discount/{id}")
     public ResponseEntity<Discount> deleteDiscount(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(discount.delete(id));
+        return ResponseEntity.status(HttpStatus.OK).body(discountService.delete(id));
+    }
+
+    // 식당별 할인 보기 : http://localhost:8080/api/discount/1/restaurant
+    @GetMapping("/discount/{id}/restaurant")
+    public ResponseEntity<List<Discount>> resDiscountList(@PathVariable int id) {
+        log.info("discountController 식당별 할인 보기 실행");
+        List<Discount> discountList = discountService.findByResCode(id);
+        log.info("discountList : " + discountList);
+
+        return ResponseEntity.ok().body(discountList);
+
     }
 
 

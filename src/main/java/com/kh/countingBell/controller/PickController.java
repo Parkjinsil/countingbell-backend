@@ -13,6 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/*")
+@CrossOrigin(origins={"*"}, maxAge = 6000)
 public class PickController {
 
     @Autowired

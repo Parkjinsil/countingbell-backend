@@ -17,6 +17,7 @@ public class MemberService {
     @Autowired
     private MemberDAO memberDAO;
 
+
     public List<Member> showAll() {
         return memberDAO.findAll();
     }
@@ -51,7 +52,7 @@ public class MemberService {
         return null;
     }
 
-    // 아이디 찾기
+    // 회워가입 후 아이디 찾기
     public String searchId(MemberDTO memberDTO)
     {
         return memberDAO.searchId(memberDTO.getName(), memberDTO.getPhone());
@@ -73,8 +74,20 @@ public class MemberService {
     }
 
 
-}
+    // 아이디 중복체크
+    public boolean isIdExists(String id) {
+        Member member = memberDAO.findById(id).orElse(null);
+        return member != null;
+        // true : 중복된 아이디
+    }
 
+    // 닉네임 중복체크
+    public boolean isNicknameExists(String nickname) {
+        return memberDAO.findByNickname(nickname).isPresent();
+        // false : 중복된 닉네임
+    }
+
+}
 
 
 

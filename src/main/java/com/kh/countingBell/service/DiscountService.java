@@ -1,6 +1,7 @@
 package com.kh.countingBell.service;
 
 import com.kh.countingBell.domain.Discount;
+import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.repo.DiscountDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,6 @@ public class DiscountService {
     public List<Discount> findByResCode(int id) {
         return discountDAO.findByResCode(id);
     }
+
 
 }
