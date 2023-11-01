@@ -26,18 +26,18 @@ import java.util.List;
 public class ReservationController {
 
     @Autowired
-    private ReservationService reservation;
+    private ReservationService reservationService;
 
     //예약 전체 조회 : GET - http://localhost:8080/api/reservation
     @GetMapping("/reservation")
     public  ResponseEntity<List<Reservation>> ReservationList() {
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.showAll());
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.showAll());
     }
 
     //예약 상세 조회 : GET - http://localhost:8080/api/reservation/1
     @GetMapping("/reservation/{id}")
     public  ResponseEntity<Reservation> showReservation(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.show(id));
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.show(id));
     }
 
     //예약 추가 : POST - http://localhost:8080/api/reservation
@@ -61,18 +61,22 @@ public class ReservationController {
         mem.setId(id);
         vo.setMember(mem);
 
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.create(vo));
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.create(vo));
     }
 
     //예약 수정 : PUT - http://localhost:8080/api/reservation
     @PutMapping("/reservation")
     public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation vo) {
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.update(vo));
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.update(vo));
     }
 
     //예약 삭제 : DELETE - http://localhost:8080/api/reservation/1
     @DeleteMapping("/reservation/{id}")
     public ResponseEntity<Reservation> deleteReservation(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(reservation.delete(id));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reservationService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

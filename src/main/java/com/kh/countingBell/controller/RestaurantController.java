@@ -10,6 +10,7 @@ import com.kh.countingBell.service.PhotoService;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,22 +116,22 @@ public class RestaurantController {
 
 
 
-    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
-    @GetMapping("/public/restaurant")
-    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
-
-
-        // 정렬
-        Sort sort = Sort.by("resCode").descending();
-
-        // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(page-1, 10, sort);
-
-        Page<Restaurant> result = restaurantService.showAll(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
-
-
-    }
+//    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
+//    @GetMapping("/public/restaurant")
+//    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
+//
+//
+//        // 정렬
+//        Sort sort = Sort.by("resCode").descending();
+//
+//        // 한 페이지에 10개
+//        Pageable pageable = PageRequest.of(page-1, 10, sort);
+//
+//        Page<Restaurant> result = restaurantService.showAll(pageable);
+//        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+//
+//
+//    }
 
 
     // 식당 1개 보기
@@ -150,48 +151,40 @@ public class RestaurantController {
         }
 
 
-        // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
-        @GetMapping("/public/restaurant")
-        public ResponseEntity<List<Restaurant>> restaurantList (
-        @RequestParam(name = "page", defaultValue = "1") int page
-        ) {
+    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
+    @GetMapping("/public/restaurant")
+    public ResponseEntity<List<Restaurant>> restaurantList (
+            @RequestParam(name = "page", defaultValue = "1") int page
+    ) {
 
-            // 정렬
-            Sort sort = Sort.by("resCode").descending();
+        // 정렬
+        Sort sort = Sort.by("resCode").descending();
 
-            // 한 페이지에 10개
-            Pageable pageable = PageRequest.of(page - 1, 12, sort);
+        // 한 페이지에 10개
+        Pageable pageable = PageRequest.of(page - 1, 12, sort);
 
-            QRestaurant qRestaurant = QRestaurant.restaurant;
+        QRestaurant qRestaurant = QRestaurant.restaurant;
 
-            BooleanBuilder builder = new BooleanBuilder();
+        BooleanBuilder builder = new BooleanBuilder();
 
-            Page<Restaurant> result = restaurantService.showAll(pageable, builder);
-
-
-            log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
-            log.info("Total Count : " + result.getTotalElements()); // 전체 개수
-            log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
-            log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
-            log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
-            log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
+        Page<Restaurant> result = restaurantService.showAll(pageable, builder);
 
 
-            return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
+        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
+        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
+        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
+        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
+        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
+        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
 
 
 
-        }
+    }
 
-    // 식당 1개 보기
-        @GetMapping("/restaurant/{id}")
-        public ResponseEntity<Restaurant> showRestaurant ( @PathVariable int id){
-            try {
-                return ResponseEntity.status(HttpStatus.OK).body(restaurantService.show(id));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-        }
+
 
     // 아이디별 식당 전체 보기
     @GetMapping("/restaurant/{id}/user")
