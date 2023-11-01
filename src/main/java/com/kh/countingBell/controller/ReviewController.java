@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,14 +109,51 @@ public class ReviewController {
 
     //리뷰 수정 : PUT - http://localhost:8080/api/review
     @PutMapping("/review")
-    public ResponseEntity<Review> updateReview(@RequestBody Review vo) {
+    public ResponseEntity<Review> updateReview(@RequestParam(value = "reviewCode", required = true) Integer reviewCode,
+                                               @RequestParam(value = "resCode", required = true) Integer resCode,
+                                               @RequestPart(value = "reviewPhoto", required = true) MultipartFile reviewPhoto,
+                                               @RequestParam(value = "reviewContent", required = true) String reviewContent,
+                                               @RequestParam(value = "reviewGrade", required = true) Integer reviewGrade,
+                                               @RequestParam(value = "id", required = true) String id,
+                                               @RequestParam(value="reviewDate", required = true) Date reviewDate) {
+        String originalPhoto = reviewPhoto.getOriginalFilename();
+        String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
+        String uuid = UUID.randomUUID().toString();
+        String savePhoto = uploadPath + File.separator + uuid + "_" + realImage;
+        Path pathPhoto = Paths.get(savePhoto);
+
+        try {
+            reviewPhoto.transferTo(pathPhoto);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Review vo = new Review();
+        vo.setReviewCode(reviewCode);
+        vo.setReviewContent(reviewContent);
+        vo.setReviewGrade(reviewGrade);
+        vo.setReviewDate(reviewDate);
+        vo.setReviewPhoto(uuid +  "_" + realImage);
+
+        Restaurant res = new Restaurant();
+        res.setResCode(resCode);
+        vo.setRestaurant(res);
+
+        Member mem = new Member();
+        mem.setId(id);
+        vo.setMember(mem);
+
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.update(vo));
     }
 
     //리뷰 삭제 : DELETE - http://localhost:8080/api/review/1
     @DeleteMapping("/review/{id}")
     public ResponseEntity<Review> deleteReview(@PathVariable int id) {
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.delete(id));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reviewService.delete(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
-
 }
+
