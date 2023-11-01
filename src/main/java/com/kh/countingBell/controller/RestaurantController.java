@@ -10,6 +10,7 @@ import com.kh.countingBell.service.PhotoService;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -112,27 +113,6 @@ public class RestaurantController {
     }
 
 
-
-
-
-    // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
-    @GetMapping("/public/restaurant")
-    public ResponseEntity<List<Restaurant>> restaurantList(@RequestParam(name="page", defaultValue = "1") int page, @RequestParam(name="food", required = false) Integer food) {
-
-
-        // 정렬
-        Sort sort = Sort.by("resCode").descending();
-
-        // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(page-1, 10, sort);
-
-        Page<Restaurant> result = restaurantService.showAll(pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
-
-
-    }
-
-
     // 식당 1개 보기
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
@@ -183,15 +163,6 @@ public class RestaurantController {
 
         }
 
-    // 식당 1개 보기
-        @GetMapping("/restaurant/{id}")
-        public ResponseEntity<Restaurant> showRestaurant ( @PathVariable int id){
-            try {
-                return ResponseEntity.status(HttpStatus.OK).body(restaurantService.show(id));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-        }
 
     // 아이디별 식당 전체 보기
     @GetMapping("/restaurant/{id}/user")
