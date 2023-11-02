@@ -48,10 +48,6 @@ public class RestaurantService {
     }
 
 
-    // 식당 전체 조회
-//    public Page<Restaurant> showAll(Pageable pageable) {
-//        return restaurantDAO.findAll(pageable);
-//    }
 
     public Page<Restaurant> showAll(Pageable pageable, BooleanBuilder builder){
         return restaurantDAO.findAll(builder, pageable);
@@ -70,9 +66,6 @@ public class RestaurantService {
       return restaurantDAO.searchResByName(keyword);
 
     }
-
-
-
 
 
     // 식당 추가

@@ -36,11 +36,11 @@ public class Member {
     @Column
     private String nickname;
 
-    @Column
-    private String gender;
-
-    @Column
-    private int age;
+//    @Column
+//    private String gender;
+//
+//    @Column
+//    private int age;
 
     @Column
     private String email;

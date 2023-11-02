@@ -159,8 +159,8 @@ public class MemberController {
                 .name(memberDTO.getName())
                 .phone(memberDTO.getPhone())
                 .nickname(memberDTO.getNickname())
-                .gender(memberDTO.getGender())
-                .age(memberDTO.getAge())
+//                .gender(memberDTO.getGender())
+//                .age(memberDTO.getAge())
                 .email(memberDTO.getEmail())
                 .role(memberDTO.getRole())
                 .build();
@@ -172,8 +172,8 @@ public class MemberController {
                 .name(registerMember.getName())
                 .phone(registerMember.getPhone())
                 .nickname(registerMember.getNickname())
-                .gender(registerMember.getGender())
-                .age(registerMember.getAge())
+//                .gender(registerMember.getGender())
+//                .age(registerMember.getAge())
                 .email(registerMember.getEmail())
                 .role(registerMember.getRole())
                 .build();
