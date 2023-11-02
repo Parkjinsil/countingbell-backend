@@ -43,8 +43,8 @@ public class ReviewService {
         return null;
     }
 
-    public Review delete(int id) {
-        Review target = reviewDAO.findById(id).orElse(null);
+    public Review delete(int reviewCode) {
+        Review target = reviewDAO.findById(reviewCode).orElse(null);
         reviewDAO.delete(target);
         return target;
     }

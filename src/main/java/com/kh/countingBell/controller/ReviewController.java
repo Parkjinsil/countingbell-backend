@@ -91,6 +91,7 @@ public class ReviewController {
             throw new RuntimeException(e);
         }
 
+
         Review vo = new Review();
         vo.setReviewPhoto(uuid + "_" + realImage);
         vo.setReviewContent(reviewContent);
@@ -114,8 +115,7 @@ public class ReviewController {
                                                @RequestPart(value = "reviewPhoto", required = true) MultipartFile reviewPhoto,
                                                @RequestParam(value = "reviewContent", required = true) String reviewContent,
                                                @RequestParam(value = "reviewGrade", required = true) Integer reviewGrade,
-                                               @RequestParam(value = "id", required = true) String id,
-                                               @RequestParam(value="reviewDate", required = true) Date reviewDate) {
+                                               @RequestParam(value = "id", required = true) String id) {
         String originalPhoto = reviewPhoto.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
         String uuid = UUID.randomUUID().toString();
@@ -127,6 +127,9 @@ public class ReviewController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Review review = reviewService.show(reviewCode);
+        Date reviewDate = review.getReviewDate();
 
         Review vo = new Review();
         vo.setReviewCode(reviewCode);
@@ -147,10 +150,10 @@ public class ReviewController {
     }
 
     //리뷰 삭제 : DELETE - http://localhost:8080/api/review/1
-    @DeleteMapping("/review/{id}")
-    public ResponseEntity<Review> deleteReview(@PathVariable int id) {
+    @DeleteMapping("/review/{reviewCode}")
+    public ResponseEntity<Review> deleteReview(@PathVariable int reviewCode) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(reviewService.delete(id));
+            return ResponseEntity.status(HttpStatus.OK).body(reviewService.delete(reviewCode));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
