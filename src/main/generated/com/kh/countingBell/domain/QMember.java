@@ -19,11 +19,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final NumberPath<Integer> age = createNumber("age", Integer.class);
-
     public final StringPath email = createString("email");
-
-    public final StringPath gender = createString("gender");
 
     public final StringPath id = createString("id");
 
