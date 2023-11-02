@@ -21,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/*")
 @Slf4j
-@Log4j2
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class ReservationController {
 

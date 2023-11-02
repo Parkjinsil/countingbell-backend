@@ -12,6 +12,7 @@ import com.kh.countingBell.service.ReservationService;
 import com.kh.countingBell.service.RestaurantService;
 import com.querydsl.core.BooleanBuilder;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/*")
-@Log4j2
+@Slf4j
 @CrossOrigin(origins={"*"}, maxAge = 6000)
 public class RestaurantController {
 
@@ -63,8 +64,6 @@ public class RestaurantController {
     @Autowired
     private ReviewService reviewService;
 
-    @Autowired
-    private PickService pick;
 
     // 식당별 리뷰 찾기 : http://localhost:8080/api/restaurant/1/review
     @GetMapping("/restaurant/{resCode}/review")
@@ -76,7 +75,7 @@ public class RestaurantController {
     // 식당 1개에 따른 찜 조회
     @GetMapping("/restaurant/{id}/pick")
     public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(pick.findByResCode(id));
+        return ResponseEntity.status(HttpStatus.OK).body(pickService.findByResCode(id));
     }
 
     // 식당 1개에 따른 할인 조회
@@ -163,6 +162,7 @@ public class RestaurantController {
 
 
     }
+
 
 
 
@@ -269,7 +269,6 @@ public class RestaurantController {
 
 
 
-
     // 식당명으로 식당 검색하기
     @GetMapping("/restaurant/search/{keyword}")
     public List<Restaurant> searchResByName(@PathVariable String keyword) {
@@ -317,7 +316,9 @@ public class RestaurantController {
 
 
 
-}
+
+    }
+
 
 
 

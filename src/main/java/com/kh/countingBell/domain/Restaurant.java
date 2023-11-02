@@ -61,6 +61,7 @@ public class Restaurant {
     @JoinColumn(name="food_code")
     private Food food;
 
+    @Builder.Default
     @ManyToOne
     @JoinColumn(name="id")
     private Member member = new Member();

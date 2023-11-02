@@ -22,7 +22,6 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer>, Query
     List<Restaurant> findByLocalCode(@Param("localCode") int localCode);
                                                       // 이곳의 code가 쿼리문 안의 '?' 자리로 들어간다  ==> service로 메서드 추가하러 가기
 
-
     // 음식종류에 따른 식당 조회
     @Query(value = "SELECT * FROM restaurant WHERE food_code = :foodCode", nativeQuery = true)
     List<Restaurant> findResByFood(@Param("foodCode") int foodCode);
@@ -34,12 +33,12 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer>, Query
     @Transactional
     @Modifying
     @Query(value = "UPDATE RESTAURANT SET RES_PICKS = (RES_PICKS + 1) WHERE RES_CODE = :resCode",nativeQuery = true)
-    int updatePicks(int resCode);
+    int updatePicks(@Param("resCode") int resCode);
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE RESTAURANT SET RES_PICKS = (RES_PICKS - 1) WHERE RES_CODE = :resCode", nativeQuery = true)
-    int deletePicks(int resCode);
+    int deletePicks(@Param("resCode") int resCode);
 
 
     // 아이디별 식당조회
