@@ -3,8 +3,12 @@ package com.kh.countingBell.service;
 import com.kh.countingBell.domain.Pick;
 import com.kh.countingBell.domain.Restaurant;
 import com.kh.countingBell.repo.PickDAO;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +20,17 @@ public class PickService {
     @Autowired
     private PickDAO pickDAO;
 
-    public List<Pick> showAll() {
-        return pickDAO.findAll();
+    public Page<Pick> showAll(Pageable pageable, BooleanBuilder builder) {
+        return pickDAO.findAll(builder, pageable);
     }
 
     public Pick show(int pickCode) {
         return pickDAO.findById(pickCode).orElse(null);
+    }
+
+    // 사용자에 따른 찜조회
+    public List<Pick> findPickById(String id) {
+        return pickDAO.findByMember(id);
     }
 
     public Pick findByIdAndRestaurant(String id, int resCode){

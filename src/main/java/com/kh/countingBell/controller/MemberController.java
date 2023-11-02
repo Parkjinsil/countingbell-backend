@@ -7,9 +7,11 @@ import com.kh.countingBell.service.MemberService;
 import com.kh.countingBell.service.ReviewService;
 import com.kh.countingBell.service.*;
 import jakarta.mail.MessagingException;
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,6 +44,9 @@ public class MemberController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PickService pickService;
 
     static final int tempPwd_size = 10;       //만드려고 하는 임시 비밀번호의 사이즈
     private final String tempPwd = RandomStringUtils.randomAlphanumeric(tempPwd_size);
@@ -257,6 +262,25 @@ public class MemberController {
         boolean isAvailable = !memberService.isNicknameExists(nickname);
         return ResponseEntity.ok(isAvailable);
     }
+
+    // 내가 찜한 레스토랑 리스트
+    @GetMapping("/user/{id}/picks")
+    public ResponseEntity<List<Pick>> getUserPickedRestaurants(@PathVariable String id){
+        log.info("id : "+id);
+
+        //사용자 및 찜 목록 가져오기
+        Member member = memberService.show(id);
+
+        List<Pick> pickList = pickService.findPickById(member.getId());
+        log.info("Picks found for user " + id + ": " + pickList);
+        return ResponseEntity.ok().body(pickList);
+    }
+
+     //내가 찜한 레스토랑 리스트
+//    @GetMapping("/member/{id}/pick")
+//    public ResponseEntity<List<Pick>> getUserPickedRestaurants(@PathVariable String id){
+//        return ResponseEntity.status(HttpStatus.OK).body(pickService.findPickById(id));
+//    }
 
 
 }
