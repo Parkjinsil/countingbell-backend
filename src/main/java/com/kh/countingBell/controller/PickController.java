@@ -49,7 +49,5 @@ public class PickController {
         return ResponseEntity.status(HttpStatus.OK).body(pick.delete(id));
     }
 
-    // 식당에 따른 식당찜 조회
-
 
 }
