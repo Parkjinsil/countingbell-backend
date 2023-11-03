@@ -19,8 +19,4 @@ public interface ReviewDAO extends JpaRepository<Review,Integer> {
     @Query(value = "SELECT * FROM review WHERE id = :id", nativeQuery = true)
     List<Review> findReviewById(@Param("id") String id);
 
-    //평점 ?인 리뷰 조회
-    @Query(value = "SELECT * FROM REVIEW WHERE review_grade = :grade", nativeQuery = true)
-    List<Review> reviewByGrade(@Param("grade") Integer grade);
-
 }

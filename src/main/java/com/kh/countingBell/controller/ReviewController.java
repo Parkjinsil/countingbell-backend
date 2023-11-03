@@ -47,11 +47,6 @@ public class ReviewController {
     @Autowired
     private ResCommentService resComment;
 
-    // 평점 ?인 리뷰 조회
-    @GetMapping("/review/{id}/grade")
-    public ResponseEntity<List<Review>> reviewByGrade(@PathVariable int grade) {
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.reviewByGrade(grade));
-    }
 
     // 리뷰 1개에 따른 댓글 조회
     @GetMapping("/review/{id}/comment")

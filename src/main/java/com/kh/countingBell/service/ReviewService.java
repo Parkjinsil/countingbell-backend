@@ -55,7 +55,5 @@ public class ReviewService {
     // id별 리뷰
     public List<Review> findReviewById(String id){ return reviewDAO.findReviewById(id); }
 
-    //평점 ?인 리뷰 조회
-    public List<Review> reviewByGrade(Integer grade){ return reviewDAO.reviewByGrade(grade); }
 
 }
