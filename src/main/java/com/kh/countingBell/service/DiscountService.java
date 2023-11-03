@@ -3,8 +3,11 @@ package com.kh.countingBell.service;
 import com.kh.countingBell.domain.Discount;
 import com.kh.countingBell.domain.Menu;
 import com.kh.countingBell.repo.DiscountDAO;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +22,8 @@ public class DiscountService {
 //    @Autowired
 //    private RestaurantDAO restaurantDAO;
 
-    public List<Discount> showAll() {
-        return discountDAO.findAll();
+    public Page<Discount> showAll(Pageable pageable, BooleanBuilder builder) {
+        return discountDAO.findAll(builder, pageable);
     }
 
     public Discount show(int id) {

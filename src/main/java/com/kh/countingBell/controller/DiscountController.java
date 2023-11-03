@@ -1,9 +1,8 @@
 package com.kh.countingBell.controller;
 
-import com.kh.countingBell.domain.Discount;
-import com.kh.countingBell.domain.Menu;
-import com.kh.countingBell.domain.Restaurant;
+import com.kh.countingBell.domain.*;
 import com.kh.countingBell.service.DiscountService;
+import com.querydsl.core.BooleanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,21 @@ public class DiscountController {
     private DiscountService discountService;
 
     @GetMapping("/public/discount")
-    public ResponseEntity<List<Discount>> showDiscountList() {
-        return ResponseEntity.status(HttpStatus.OK).body(discountService.showAll());
+    public ResponseEntity<List<Discount>> showDiscountList(            @RequestParam(name = "page", defaultValue = "1") int page
+    ) {
+        // 정렬
+        Sort sort = Sort.by("disCode").descending();
+
+        // 한 페이지에 12개
+        Pageable pageable = PageRequest.of(page - 1, 12, sort);
+
+        QDiscount qDiscount = QDiscount.discount;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        Page<Discount> result = discountService.showAll(pageable, builder);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
     @GetMapping("/discount/{id}")

@@ -35,8 +35,8 @@ public class PickController {
         // 정렬
         Sort sort = Sort.by("pickCode").descending();
 
-        // 한 페이지에 10개
-        Pageable pageable = PageRequest.of(page - 1, 12, sort);
+        // 한 페이지에 50개
+        Pageable pageable = PageRequest.of(page - 1, 50, sort);
 
         QPick qPick = QPick.pick;
 
