@@ -182,7 +182,7 @@ public class RestaurantController {
                                                        @RequestParam(value = "resClose", required = true) String resClose,
                                                        @RequestParam(value = "resDesc", required = true) String resDesc,
                                                        @RequestParam(value = "localCode", required = true) Integer localCode,
-                                                      Integer foodCode,
+                                                       Integer foodCode,
                                                        @RequestParam(value = "id", required = true) String id,
                                                        @RequestParam(value = "resPicks", required = true) Integer resPicks,
                                                        @RequestPart(value = "resPicture", required = true) MultipartFile resPicture) {
