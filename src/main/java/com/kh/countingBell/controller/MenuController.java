@@ -51,7 +51,7 @@ public class MenuController {
 
     }
 
-    // 음식명으로 식당 검색하기
+    // 메뉴명으로 식당 검색하기
     @GetMapping("/search/{keyword}")
     public List<Menu> searchResByMenuName(@PathVariable String keyword) {
         log.info("keyword : " + keyword);
