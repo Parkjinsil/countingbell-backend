@@ -43,12 +43,8 @@ public class MenuController {
     // 식당별 메뉴 찾기 : http://localhost:8080/api/menu/{resCode}/restaurant
     @GetMapping("/menu/{id}/restaurant")
     public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
-        log.info("menuController 식당별 메뉴 찾기 실행");
         List<Menu> menuList = menuService.findByResCode(id);
-        log.info("menuList : " + menuList);
-
         return ResponseEntity.ok().body(menuList);
-
     }
 
     // 음식명으로 식당 검색하기
@@ -99,10 +95,6 @@ public class MenuController {
                                            String menuName,
                                            String menuDesc,
                                            String menuPrice) {
-//        log.info("menuPicture : " + menuPicture);
-//        log.info("menuName : " + menuName);
-//        log.info("menuPrice : " + menuPrice);
-//        log.info("resCode : " + resCode);
 
         String originalPhoto = menuPicture.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
@@ -126,8 +118,6 @@ public class MenuController {
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
 
-
-
         return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
 
     }
@@ -142,9 +132,6 @@ public class MenuController {
                                            @RequestParam(value = "menuName", required = true) String menuName,
                                            @RequestParam(value = "menuDesc", required = true) String menuDesc,
                                            @RequestParam(value = "menuPrice", required = true) String menuPrice) {
-
-        log.info("들어옴?");
-        log.info(menuPicture.getOriginalFilename());
 
         String originalPhoto = menuPicture.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
@@ -168,13 +155,6 @@ public class MenuController {
         Restaurant restaurant = new Restaurant();
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
-
-        log.info("menuPicture : " + menuPicture);
-        log.info("menuName : " + menuName);
-        log.info("menuDesc : " + menuDesc);
-        log.info("menuPrice : " + menuPrice);
-        log.info("menuCode : " + menuCode);
-        log.info("resCode : " + resCode);
 
  return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
     }

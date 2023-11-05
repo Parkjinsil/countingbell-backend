@@ -16,7 +16,6 @@ public interface ReservationDAO extends JpaRepository<Reservation,Integer> {
     List<Reservation> findByResCode(@Param("resCode") int resCode);
 
 
-    //사용자 id에 따른 예약 조회
     @Query(value = "SELECT * FROM reservation WHERE id = :id", nativeQuery = true)
     List<Reservation> findReserById(@Param("id") String id);
 }
