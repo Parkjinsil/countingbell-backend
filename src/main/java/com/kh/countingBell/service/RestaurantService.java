@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 import java.util.List;
@@ -73,7 +74,8 @@ public class RestaurantService {
                 return restaurantDAO.save(restaurant);
     }
 
-    // 식당 수정
+    // 식당 수정 : PUT - http://locahost:8080/api/restaurant
+    @PutMapping("/restaurant")
     public Restaurant update(Restaurant restaurant) {
         Restaurant target = restaurantDAO.findById(restaurant.getResCode()).orElse(null);
         if(target != null) {
@@ -83,15 +85,11 @@ public class RestaurantService {
     }
 
     // 식당 삭제
-    public Restaurant delete(int id) {
-        Restaurant target = restaurantDAO.findById(id).orElse(null);
+    public Restaurant delete(int resCode) {
+        Restaurant target = restaurantDAO.findById(resCode).orElse(null);
         restaurantDAO.delete(target);
         return target;
     }
-
-
-
-
 
     // 음식종류에 따른 식당 조회
     public List<Restaurant> findResByFood(int id) {
