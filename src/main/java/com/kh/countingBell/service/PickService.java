@@ -24,6 +24,7 @@ public class PickService {
         return pickDAO.findAll(builder, pageable);
     }
 
+    // 찜 보기
     public Pick show(int pickCode) {
         return pickDAO.findById(pickCode).orElse(null);
     }
@@ -33,14 +34,17 @@ public class PickService {
         return pickDAO.findByMember(id);
     }
 
+    // 사용자 식당 찜 중복 제거
     public Pick findByIdAndRestaurant(String id, int resCode){
         return pickDAO.findByIdAndRestaurant(id, resCode);
     }
 
+    // 찜 추가
     public Pick create(Pick pick) {
         return pickDAO.save(pick);
     }
 
+    // 식당 찜 (찜수 + )
     public Pick update(Pick pick) {
         Pick target = pickDAO.findById(pick.getPickCode()).orElse(null);
         if(target!=null) {
@@ -49,6 +53,7 @@ public class PickService {
         return null;
     }
 
+    // 찜 삭제
     public Pick delete(int pickCode) {
         Pick pick = pickDAO.findById(pickCode).orElse(null);
         pickDAO.delete(pick);

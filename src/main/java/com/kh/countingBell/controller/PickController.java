@@ -27,23 +27,18 @@ public class PickController {
     @Autowired
     private PickService pick;
 
+    // 찜 전체 조회 : http://localhost:8080/api/public/pick?page=1
     @GetMapping("/public/pick")
     public ResponseEntity<List<Pick>> showPickList(
             @RequestParam(name = "page", defaultValue = "1") int page
     ) {
-
         // 정렬
         Sort sort = Sort.by("pickCode").descending();
-
         // 한 페이지에 50개
         Pageable pageable = PageRequest.of(page - 1, 50, sort);
-
         QPick qPick = QPick.pick;
-
         BooleanBuilder builder = new BooleanBuilder();
-
         Page<Pick> result = pick.showAll(pageable, builder);
-
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
@@ -63,6 +58,7 @@ public class PickController {
         return ResponseEntity.status(HttpStatus.OK).body(pick.create(vo));
     }
 
+    // http://localhost:8080/api/restaurant/pick
     @PutMapping("/pick")
     public ResponseEntity<Pick> updatePick(@RequestBody Pick vo) {
         Pick result = pick.update(vo);
@@ -72,6 +68,7 @@ public class PickController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // http://localhost:8080/api/restaurant/pick/1
     @DeleteMapping("/pick/{id}")
     public ResponseEntity<Pick> deletePick(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(pick.delete(id));

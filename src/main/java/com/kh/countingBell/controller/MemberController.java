@@ -259,7 +259,7 @@ public class MemberController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    // 내가 찜한 레스토랑 리스트
+    // 내가 찜한 식당 리스트 : http://localhost:8080/api/user/user1/picks
     @GetMapping("/user/{id}/picks")
     public ResponseEntity<List<Pick>> getUserPickedRestaurants(@PathVariable String id){
         log.info("id : "+id);
