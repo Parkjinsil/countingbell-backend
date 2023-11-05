@@ -50,7 +50,4 @@ public interface RestaurantDAO extends JpaRepository<Restaurant, Integer>, Query
     @Query(value = "SELECT * FROM restaurant WHERE res_name LIKE %:keyword%", nativeQuery = true)
     List<Restaurant> searchResByName(@Param("keyword") String keyword);
 
-
-
-
 }

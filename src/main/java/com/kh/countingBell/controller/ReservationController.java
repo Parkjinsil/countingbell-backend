@@ -45,7 +45,7 @@ public class ReservationController {
                                                          String id,
                                                          Integer resCode,
                                                          @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date reserDate,
-                                                         @RequestParam @DateTimeFormat(pattern = "HH:mm") Date reserTime) {
+                                                         String reserTime) {
 
         Reservation vo = new Reservation();
         vo.setReserPer(reserPer);

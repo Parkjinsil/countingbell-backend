@@ -30,7 +30,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final NumberPath<Integer> reserPer = createNumber("reserPer", Integer.class);
 
-    public final DateTimePath<java.util.Date> reserTime = createDateTime("reserTime", java.util.Date.class);
+    public final StringPath reserTime = createString("reserTime");
 
     public final QRestaurant restaurant;
 

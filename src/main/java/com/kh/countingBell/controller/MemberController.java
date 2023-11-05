@@ -272,11 +272,4 @@ public class MemberController {
         return ResponseEntity.ok().body(pickList);
     }
 
-     //내가 찜한 레스토랑 리스트
-//    @GetMapping("/member/{id}/pick")
-//    public ResponseEntity<List<Pick>> getUserPickedRestaurants(@PathVariable String id){
-//        return ResponseEntity.status(HttpStatus.OK).body(pickService.findPickById(id));
-//    }
-
-
 }

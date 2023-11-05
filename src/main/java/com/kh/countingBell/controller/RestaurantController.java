@@ -123,11 +123,11 @@ public class RestaurantController {
         }
     }
 
-        // 식당 1개의 메뉴 조회
-        @GetMapping("/restaurant/{id}/menu")
-        public ResponseEntity<List<Menu>> resMenuList ( @PathVariable int id){
-            return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
-        }
+//        // 식당 1개의 메뉴 조회
+//        @GetMapping("/restaurant/{id}/menu")
+//        public ResponseEntity<List<Menu>> resMenuList ( @PathVariable int id){
+//            return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
+//        }
 
 
     // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
