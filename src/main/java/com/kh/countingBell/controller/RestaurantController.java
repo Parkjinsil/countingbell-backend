@@ -74,7 +74,7 @@ public class RestaurantController {
 
     // 식당 1개에 따른 찜 조회
     @GetMapping("/restaurant/{id}/pick")
-    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id){
+    public ResponseEntity<List<Pick>> resPickList(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(pickService.findByResCode(id));
     }
 
@@ -112,7 +112,6 @@ public class RestaurantController {
     }
 
 
-
     // 식당 1개 보기
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
@@ -123,16 +122,16 @@ public class RestaurantController {
         }
     }
 
-        // 식당 1개의 메뉴 조회
-        @GetMapping("/restaurant/{id}/menu")
-        public ResponseEntity<List<Menu>> resMenuList ( @PathVariable int id){
-            return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
-        }
+    // 식당 1개의 메뉴 조회
+    @GetMapping("/restaurant/{id}/menu")
+    public ResponseEntity<List<Menu>> resMenuList(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
+    }
 
 
     // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
     @GetMapping("/public/restaurant")
-    public ResponseEntity<List<Restaurant>> restaurantList (
+    public ResponseEntity<List<Restaurant>> restaurantList(
             @RequestParam(name = "page", defaultValue = "1") int page
     ) {
 
@@ -160,10 +159,7 @@ public class RestaurantController {
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
 
 
-
     }
-
-
 
 
     // 아이디별 식당 전체 보기
@@ -240,21 +236,63 @@ public class RestaurantController {
     }
 
 
-        // 식당 수정하기
-        @PutMapping("/restaurant")
-        public ResponseEntity<Restaurant> updateRestaurant (@RequestBody Restaurant vo){
-            try {
-                return ResponseEntity.status(HttpStatus.OK).body(restaurantService.update(vo));
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
+    // 식당 수정하기
+    @PutMapping("/restaurant")
+    public ResponseEntity<Restaurant> updateRestaurant(Integer resCode,
+                                                       String resName,
+                                                       String resAddr,
+                                                       String resPhone,
+                                                       String resOpenHour,
+                                                       String resClose,
+                                                       String resDesc,
+                                                       Integer localCode,
+                                                       Integer foodCode,
+                                                       String id,
+                                                       Integer resPicks,
+                                                       @RequestPart(value = "resPicture", required = true) MultipartFile resPicture) {
+        String originalPicture = resPicture.getOriginalFilename();
+        String realImage = originalPicture.substring(originalPicture.lastIndexOf("\\") + 1);
+        String uuid = UUID.randomUUID().toString();
+        String savePicture = uploadPath + File.separator + uuid + "_" + realImage;
+        Path pathPicture = Paths.get(savePicture);
+
+        try {
+            resPicture.transferTo(pathPicture);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
+        Restaurant res = new Restaurant();
+        res.setResCode(resCode);
+        res.setResName(resName);
+        res.setResAddr(resAddr);
+        res.setResPhone(resPhone);
+        res.setResOpenHour(resOpenHour);
+        res.setResClose(resClose);
+        res.setResDesc(resDesc);
+        res.setResPicks(resPicks);
+        res.setResPicture(uuid + "_" + realImage);
+
+        Location loc = new Location();
+        loc.setLocalCode(localCode);
+        res.setLocation(loc);
+
+        Food food = new Food();
+        food.setFoodCode(foodCode);
+        res.setFood(food);
+
+        Member mem = new Member();
+        mem.setId(id);
+        res.setMember(mem);
+
+        return ResponseEntity.status(HttpStatus.OK).body(restaurantService.update(res));
+    }
+
         // 식당 삭제
-        @DeleteMapping("/restaurant/{id}")
-        public ResponseEntity<Restaurant> deleteRestaurant ( @PathVariable int id){
+        @DeleteMapping("/restaurant/{resCode}")
+        public ResponseEntity<Restaurant> deleteRestaurant ( @PathVariable int resCode){
             try {
-                return ResponseEntity.status(HttpStatus.OK).body(restaurantService.delete(id));
+                return ResponseEntity.status(HttpStatus.OK).body(restaurantService.delete(resCode));
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
