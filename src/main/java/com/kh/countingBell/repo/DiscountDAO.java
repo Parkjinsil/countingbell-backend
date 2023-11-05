@@ -14,8 +14,7 @@ import java.util.List;
 @Repository
 public interface DiscountDAO extends JpaRepository<Discount, Integer>, QuerydslPredicateExecutor<Discount> {
 
-    // 특정 식당의 모든 할인 조회
-    // SELECT * FROM discount WHERE res_code=?
+    // 식당별 할인 보기
     @Query(value="SELECT * FROM discount WHERE res_code= :resCode", nativeQuery = true)
     List<Discount> findByResCode(@Param("resCode")int resCode);
 

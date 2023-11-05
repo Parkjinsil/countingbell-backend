@@ -91,16 +91,19 @@ public class RestaurantService {
         return target;
     }
 
+
     // 음식종류에 따른 식당 조회
     public List<Restaurant> findResByFood(int id) {
         return restaurantDAO.findResByFood(id);
     }
 
+    // 식당 전체 찜수 (+)
     public Restaurant updatePicks(int id){
         restaurantDAO.updatePicks(id);
         return restaurantDAO.findById(id).orElse(null);
     }
 
+    // 식당 전체 찜수 (-)
     public Restaurant deletePicks(int id){
         restaurantDAO.deletePicks(id);
         return restaurantDAO.findById(id).orElse(null);

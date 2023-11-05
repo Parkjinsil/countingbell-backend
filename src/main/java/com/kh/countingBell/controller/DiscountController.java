@@ -25,43 +25,30 @@ public class DiscountController {
     @Autowired
     private DiscountService discountService;
 
+    // 전체 할인 조회 : http://localhost:8080/api/public/discount
     @GetMapping("/public/discount")
-    public ResponseEntity<List<Discount>> showDiscountList(            @RequestParam(name = "page", defaultValue = "1") int page
+    public ResponseEntity<List<Discount>> showDiscountList(@RequestParam(name = "page", defaultValue = "1") int page
     ) {
-        // 정렬
         Sort sort = Sort.by("disCode").descending();
-
-        // 한 페이지에 12개
         Pageable pageable = PageRequest.of(page - 1, 12, sort);
-
         QDiscount qDiscount = QDiscount.discount;
-
         BooleanBuilder builder = new BooleanBuilder();
-
         Page<Discount> result = discountService.showAll(pageable, builder);
-
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
 
+    // 상세 할인 조회 : http://localhost:8080/api/discount/1
     @GetMapping("/discount/{id}")
     public ResponseEntity<Discount> showDiscount(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(discountService.show(id));
     }
 
-//    @PostMapping("/discount")
-//    public ResponseEntity<Discount> createDiscount(@RequestBody Discount vo){
-//        return ResponseEntity.status(HttpStatus.OK).body(discount.create(vo));
-//    }
-
+    // 할인 추가 : http://localhost:8080/api/discount
     @PostMapping("/discount")
     public ResponseEntity<Discount> createDiscount(@RequestParam(value = "disDesc", required = true) String disDesc,
                                                    @RequestParam(value = "disPeriod", required = true) String disPeriod,
                                                    @RequestParam(value = "resCode", required = true) Integer resCode
     ){
-        log.info("disDesc:"+disDesc);
-        log.info("disPeriod:"+disPeriod);
-        log.info("resCode:"+resCode);
-
         Discount vo = new Discount();
         vo.setDisDesc(disDesc);
         vo.setDisPeriod(disPeriod);
@@ -73,23 +60,17 @@ public class DiscountController {
         return ResponseEntity.status(HttpStatus.OK).body(discountService.create(vo));
     }
 
-
-
-
-
+    // 할인 수정 : http://localhost:8080/api/discount
     @PutMapping("/discount")
     public ResponseEntity<Discount> updateDiscount(@RequestBody Discount vo) {
-
-        log.info("vo:"+vo);
-
        Discount result = discountService.update(vo);
        if(result!=null) {
            return ResponseEntity.status(HttpStatus.OK).body(result);
        }
        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
     }
 
+    // 할인 삭제 : http://localhost:8080/api/discount/1
     @DeleteMapping("/discount/{id}")
     public ResponseEntity<Discount> deleteDiscount(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(discountService.delete(id));
@@ -98,13 +79,8 @@ public class DiscountController {
     // 식당별 할인 보기 : http://localhost:8080/api/discount/1/restaurant
     @GetMapping("/discount/{id}/restaurant")
     public ResponseEntity<List<Discount>> resDiscountList(@PathVariable int id) {
-        log.info("discountController 식당별 할인 보기 실행");
         List<Discount> discountList = discountService.findByResCode(id);
-        log.info("discountList : " + discountList);
-
         return ResponseEntity.ok().body(discountList);
-
     }
-
 
 }

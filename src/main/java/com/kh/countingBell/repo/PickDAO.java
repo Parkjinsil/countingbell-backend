@@ -18,7 +18,7 @@ public interface PickDAO extends JpaRepository<Pick, Integer>, QuerydslPredicate
     @Query(value="SELECT * FROM pick WHERE res_code= :resCode", nativeQuery = true)
     List<Pick> findByResCode(@Param("resCode")int resCode);
 
-    //중복제거
+    // 사용자 식당 찜 중복 제거
     @Query(value = "SELECT * FROM PICK WHERE ID = :id AND RES_CODE = :resCode", nativeQuery = true)
     Pick findByIdAndRestaurant(@Param("id")String id, @Param("resCode") int resCode);
 

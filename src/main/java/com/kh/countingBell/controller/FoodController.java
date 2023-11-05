@@ -38,12 +38,7 @@ public class FoodController {
 
         Page<Food> result = food.showAll(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
-
-
     }
-
-
-
 
 
     @GetMapping("/food/{id}")

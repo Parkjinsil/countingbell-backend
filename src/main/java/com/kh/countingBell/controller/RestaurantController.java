@@ -278,7 +278,7 @@ public class RestaurantController {
     }
 
 
-    //  식당 찜 & 찜 수 처리
+    // 식당 찜 (찜수 + ) : http://localhost:8080/api/restaurant/pick
     @PostMapping("/restaurant/pick")
     public ResponseEntity<Pick> update(@RequestBody Pick pick) {
         try {
@@ -294,7 +294,7 @@ public class RestaurantController {
 
 
 
-    // 식당 찜 취소 & 찜 수 처리
+    // 식당 찜 취소 (찜수 - ) : http://localhost:8080/api/restaurant/pick/1
     @DeleteMapping("/restaurant/pick/{pickCode}")
     public ResponseEntity<Pick> delete(@PathVariable int pickCode)
     {
