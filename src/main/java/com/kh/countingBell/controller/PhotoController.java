@@ -65,11 +65,6 @@ public class PhotoController {
         restaurant.setResCode(resCode);
         vo.setRestaurant(restaurant);
 
-       log.info("resPhoto : " + resPhoto);
-        log.info("photoName : " + photoName);
-
-        log.info("resCode : " + resCode);
-
         return ResponseEntity.status(HttpStatus.OK).body(photoService.create(vo));
     }
 

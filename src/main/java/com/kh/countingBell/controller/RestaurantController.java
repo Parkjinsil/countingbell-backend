@@ -112,7 +112,6 @@ public class RestaurantController {
     }
 
 
-
     // 식당 1개 보기
     @GetMapping("/restaurant/{id}")
     public ResponseEntity<Restaurant> showRestaurant(@PathVariable int id) {
@@ -123,12 +122,6 @@ public class RestaurantController {
         }
     }
 
-//        // 식당 1개의 메뉴 조회
-//        @GetMapping("/restaurant/{id}/menu")
-//        public ResponseEntity<List<Menu>> resMenuList ( @PathVariable int id){
-//            return ResponseEntity.status(HttpStatus.OK).body(menuService.findByResCode(id));
-//        }
-
 
     // 식당 전체 조회 : GET =  http://localhost:8080/api/public/restaurant?page=1
     @GetMapping("/public/restaurant")
@@ -136,33 +129,19 @@ public class RestaurantController {
             @RequestParam(name = "page", defaultValue = "1") int page
     ) {
 
-        // 정렬
+        // resCode로 정렬
         Sort sort = Sort.by("resCode").descending();
 
-        // 한 페이지에 10개
+        // 한 페이지에 12개
         Pageable pageable = PageRequest.of(page - 1, 12, sort);
-
         QRestaurant qRestaurant = QRestaurant.restaurant;
-
         BooleanBuilder builder = new BooleanBuilder();
 
         Page<Restaurant> result = restaurantService.showAll(pageable, builder);
 
-
-        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
-        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
-        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
-        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
-        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
-        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
-
-
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
 
-
-
     }
-
 
 
 
@@ -186,10 +165,6 @@ public class RestaurantController {
                                                        @RequestParam(value = "id", required = true) String id,
                                                        @RequestParam(value = "resPicks", required = true) Integer resPicks,
                                                        @RequestPart(value = "resPicture", required = true) MultipartFile resPicture) {
-
-
-        log.info("들어옴?");
-        log.info(resPicture.getOriginalFilename());
 
         String originalPicture = resPicture.getOriginalFilename();
         String realImage = originalPicture.substring(originalPicture.lastIndexOf("\\") + 1);
@@ -225,16 +200,6 @@ public class RestaurantController {
         mem.setId(id);
         res.setMember(mem);
 
-        log.info("setResName : " + resName);
-        log.info("setResAddr : " + resAddr);
-        log.info("setResPhone : " + resPhone);
-        log.info("setResOpenHour : " + resOpenHour);
-        log.info("setResClose : " + resClose);
-        log.info("setResDesc : " + resDesc);
-        log.info("setResPicks : " + resPicks);
-        log.info("setResPicture : " + resPicture);
-        log.info("id : " + id);
-
         return ResponseEntity.ok().body(restaurantService.create(res));
 
     }
@@ -263,7 +228,7 @@ public class RestaurantController {
         //식당 1개에 따른 예약 전체 조회 : GET - http://localhost:8080/api/restaurant/1/reservation
         @GetMapping("/restaurant/{id}/reservation")
         public ResponseEntity<List<Reservation>> ReservationList ( @PathVariable int id){
-            log.info("id : " + id);
+
             return ResponseEntity.status(HttpStatus.OK).body(reservationService.findByResCode(id));
         }
 
@@ -272,7 +237,7 @@ public class RestaurantController {
     // 식당명으로 식당 검색하기
     @GetMapping("/restaurant/search/{keyword}")
     public List<Restaurant> searchResByName(@PathVariable String keyword) {
-        log.info("keyword : " + keyword);
+
         return restaurantService.searchResByName(keyword);
 
     }

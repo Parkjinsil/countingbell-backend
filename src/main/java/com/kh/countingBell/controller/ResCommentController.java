@@ -47,8 +47,6 @@ public class ResCommentController {
         return ResponseEntity.status(HttpStatus.OK).body(resComment.deleteResComment(id));
     }
 
-    // 식당에 따른 식당 댓글 조회
-
 
 
 }

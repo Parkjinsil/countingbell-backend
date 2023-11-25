@@ -55,7 +55,6 @@ public class MenuController {
     }
 
 
-
     // 메뉴 전체 조회 : GET - http://localhost:8080/api/menu
     @GetMapping("/public/menu")
     public ResponseEntity<List<Menu>> showAllMenu(@RequestParam(name="page", defaultValue = "1") int page) {
@@ -66,13 +65,6 @@ public class MenuController {
         Pageable pageable = PageRequest.of(page-1, 10, sort);
 
         Page<Menu> result = menuService.showAll(pageable);
-//        log.info("Total Pages : " + result.getTotalPages()); // 총 몇 페이지
-//        log.info("Total Count : " + result.getTotalElements()); // 전체 개수
-//        log.info("Page Number : " + result.getNumber()); // 현재 페이지 번호
-//        log.info("Page Size : " + result.getSize()); // 페이지당 데이터 개수
-//        log.info("Next Page : " + result.hasNext()); // 다음 페이지가 있는지 존재 여부
-//        log.info("First Page : " + result.isFirst()); // 시작 페이지 여부
-
 
         return ResponseEntity.status(HttpStatus.OK).body(result.getContent());
     }
@@ -90,11 +82,11 @@ public class MenuController {
 
     // 메뉴 등록
     @PostMapping("/menu")
-    public ResponseEntity<Menu> createMenu(Integer resCode,
+    public ResponseEntity<Menu> createMenu(@RequestParam Integer resCode,
                                            @RequestPart(value = "menuPicture", required = true) MultipartFile menuPicture,
-                                           String menuName,
-                                           String menuDesc,
-                                           String menuPrice) {
+                                           @RequestParam String menuName,
+                                           @RequestParam String menuDesc,
+                                           @RequestParam String menuPrice) {
 
         String originalPhoto = menuPicture.getOriginalFilename();
         String realImage = originalPhoto.substring(originalPhoto.lastIndexOf("\\")+1);
@@ -121,7 +113,6 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.OK).body(menuService.create(vo));
 
     }
-
 
 
     // 메뉴 수정

@@ -51,9 +51,7 @@ public class MemberController {
     static final int tempPwd_size = 10;       //만드려고 하는 임시 비밀번호의 사이즈
     private final String tempPwd = RandomStringUtils.randomAlphanumeric(tempPwd_size);
 
-
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 
 
     //사용자 id에 따른 리뷰 : GET - http://localhost:8080/api/user/1/review
@@ -134,13 +132,10 @@ public class MemberController {
     }
 
 
-
-
     // 회원 삭제 : http://localhost:8080/api/user/{id}
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Member> deleteUser(@PathVariable String id) {
         try {
-            log.info("삭제 되냐?" + id);
             return ResponseEntity.status(HttpStatus.OK).body(memberService.delete(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -151,7 +146,6 @@ public class MemberController {
     //  회원가입
     @PostMapping("/user/signup")
     public ResponseEntity register(@RequestBody MemberDTO memberDTO) {
-        log.info("dto" + memberDTO);
         // 비밀번호 -> 암호화 처리 + 저장할 유저 만들기
         Member member = Member.builder()
                 .id(memberDTO.getId())
@@ -180,12 +174,9 @@ public class MemberController {
     @PostMapping("/user/signin")
     public ResponseEntity authenticate(@RequestBody MemberDTO memberDTO) {
         Member member = memberService.getByCredentials(memberDTO.getId(), memberDTO.getPassword(), passwordEncoder);
-        log.info("member :: " + member);
-        log.info("member check :: " + (member != null));
+
         if (member != null) { // -> 토큰 생성
-            log.info("여기 들어오는가?");
             String token = tokenProvider.create(member);
-            log.info("token :: ==>>>>> " + token);
             MemberDTO responseDTO = MemberDTO.builder()
                     .id(member.getId())
                     .name(member.getName())
@@ -206,10 +197,7 @@ public class MemberController {
     @PostMapping("/searchId")
     public ResponseEntity<String> searchId(@RequestBody MemberDTO memberDTO) {
 
-        log.info("memberController 아이디 찾기 실행");
-        log.info(memberDTO.toString());
         String userId = memberService.searchId(memberDTO);
-        log.info(userId);
 
         return ResponseEntity.ok().body(userId);
     }
@@ -218,15 +206,15 @@ public class MemberController {
     @PostMapping("/searchPwd")
     public ResponseEntity<String> searchPwd(@RequestBody MemberDTO memberDTO) {
         String userPwd = memberService.searchPwd(memberDTO);
-        log.info("저장되어 있는 비밀번호 : " + userPwd);
-        log.info("임시로 생성한 비밀번호 : " + tempPwd);
+//        log.info("저장되어 있는 비밀번호 : " + userPwd);
+//        log.info("임시로 생성한 비밀번호 : " + tempPwd);
         try {
             String result = emailService.sendEmail(memberDTO.getEmail(), tempPwd);
-            // 이메일 보내기가 성공하게 되면 DB에 정보 바꿔야 사용자가 변경된 비밀번호로 접근이 가능함
+            // 이메일 보내기가 성공하게 되면 사용자가 변경된 비밀번호로 접근이 가능하도록 DB에 정보 바꿔주기
             if (result.equals("Success")) {
                 // DB에서 맴버 객체 들고와서
                 Member member = memberService.findUserById(memberDTO.getId());
-                // 랜덤 생성한 비밀번호를 DB에 넣을 때 암호화해서 넘겨야 함
+                // 랜덤 생성한 비밀번호를 DB에 넣을 때 암호화해서 넘기기
                 member.setPassword(passwordEncoder.encode(tempPwd));
 
                 Member updateMember = memberService.update(member);
@@ -262,13 +250,11 @@ public class MemberController {
     // 내가 찜한 식당 리스트 : http://localhost:8080/api/user/user1/picks
     @GetMapping("/user/{id}/picks")
     public ResponseEntity<List<Pick>> getUserPickedRestaurants(@PathVariable String id){
-        log.info("id : "+id);
 
         //사용자 및 찜 목록 가져오기
         Member member = memberService.show(id);
-
         List<Pick> pickList = pickService.findPickById(member.getId());
-        log.info("Picks found for user " + id + ": " + pickList);
+
         return ResponseEntity.ok().body(pickList);
     }
 

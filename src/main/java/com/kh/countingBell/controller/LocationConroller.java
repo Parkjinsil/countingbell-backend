@@ -29,8 +29,6 @@ public class LocationConroller {
     private RestaurantService restaurantService;
 
 
-
-
     // 위치 전체 조회 http://localhost:8080/api/public/location?page=1
     @GetMapping("/public/location")
     public ResponseEntity<List<Location>> showAllLocation(@RequestParam(name="page", defaultValue = "1") int page) {
@@ -53,16 +51,6 @@ public class LocationConroller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-//    @PostMapping("/location")
-//    public ResponseEntity<Location> createLocation(@RequestParam(value = "localName", required = true) String localName) {
-//       log.info("localName : " + localName);
-//
-//       Location vo = new Location();
-//       vo.setLocalName(localName);
-//
-//       return ResponseEntity.status(HttpStatus.OK).body(location.create(vo));
-//    }
 
     @PostMapping("/location")
     public ResponseEntity<Location> createLocation(@RequestBody Location vo) {
@@ -95,9 +83,7 @@ public class LocationConroller {
     // 위치별 식당 전체 조회 : http://localhost:8080/api/restaurant/5/location
     @GetMapping("/restaurant/{id}/location")
     public ResponseEntity<List<Restaurant>> findByLocalCode(@PathVariable int id) {
-        log.info("LocationController 위치별 식당 찾기 실행");
         List<Restaurant> resList = restaurantService.findByLocalCode(id);
-        log.info("restaurantList : " + resList);
 
         return ResponseEntity.ok().body(resList);
     }
